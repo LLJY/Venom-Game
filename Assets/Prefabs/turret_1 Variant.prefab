@@ -1,0 +1,160 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4901873994698753787
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 100010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_Name
+      value: turret_1 Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.9742856
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.57228136
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.1724963
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 3fc5d227876daa34c9869c7908945d86, type: 2}
+    - target: {fileID: 9500000, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+--- !u!1 &4901873994698784849 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100010, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+  m_PrefabInstance: {fileID: 4901873994698753787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4901873994689311643 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9500000, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+  m_PrefabInstance: {fileID: 4901873994698753787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4901873994698784859 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+  m_PrefabInstance: {fileID: 4901873994698753787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4901873994698784861 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100006, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+  m_PrefabInstance: {fileID: 4901873994698753787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4901873994698784857 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100002, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+  m_PrefabInstance: {fileID: 4901873994698753787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4901873994698784863 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100004, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+  m_PrefabInstance: {fileID: 4901873994698753787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4901873994698784851 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100008, guid: d148bd46a5a4c4e4d96a7c02442100fc, type: 3}
+  m_PrefabInstance: {fileID: 4901873994698753787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &500198092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901873994698784849}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9e70ded8dbfd7a43a9c9e2dd7466a1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turretTop: {fileID: 4901873994698784861}
+  turretBase: {fileID: 4901873994698784859}
+  leftGun: {fileID: 4901873994698784863}
+  rightGun: {fileID: 4901873994698784857}
+  _player: {fileID: 0}
+  _animator: {fileID: 4901873994689311643}
+  _bulletPrefab: {fileID: 2972836088020254703, guid: 0251255e89ecc9842af9b29cdc59dd7c, type: 3}
+  rotationSpeed: 2
+  bulletSpeed: 10
+  activeRadius: 15
+--- !u!114 &500198093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901873994698784849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ef4304cfa3641f79b7c37b2f4af953c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableStatefulMB: 1
+  turretTop: {fileID: 4901873994698784861}
+  turretBase: {fileID: 4901873994698784859}
+  leftBarrel: {fileID: 4901873994698784863}
+  rightBarrel: {fileID: 4901873994698784857}
+  player: {fileID: 0}
+  animator: {fileID: 0}
+  turretTemperature: {fileID: 4901873994698784851}
+  bulletPrefab: {fileID: 2972836088020254703, guid: 0251255e89ecc9842af9b29cdc59dd7c, type: 3}
+  rotationSpeed: 2
+  bulletSpeed: 10
+  activeRadius: 20
