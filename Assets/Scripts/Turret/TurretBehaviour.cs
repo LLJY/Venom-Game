@@ -64,9 +64,7 @@ namespace Turret
             var elapsedTime = currentTime - startTime;
             while (elapsedTime < colorChangeTime)
             {
-                var lerpedColor = Color.Lerp(startColor, color, elapsedTime / colorChangeTime);
-                turretTemperatureMaterialRenderer.SetColor("_Color", color);
-                turretTemperatureMaterialRenderer.SetColor("_EmissionColor", color);
+                turretTemperatureMaterialRenderer.color = Color.Lerp(startColor, color, elapsedTime / colorChangeTime);
                 elapsedTime = currentTime - startTime;
                 yield return new WaitForSeconds(0.05f);
                 currentTime = Time.time;
