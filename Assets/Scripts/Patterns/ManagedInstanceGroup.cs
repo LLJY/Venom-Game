@@ -23,24 +23,30 @@ namespace Patterns
         {
             foreach (var behaviour in ManagedBehaviours)
             {
-                behaviour.Value.ManagedUpdate();
+                behaviour.Value.Update();
             }
         }
         protected virtual void LateUpdate()
         {
             foreach (var behaviour in ManagedBehaviours)
             {
-                behaviour.Value.ManagedLateUpdate();
+                behaviour.Value.LateUpdate();
             }
         }
         protected virtual void FixedUpdate()
         {
             foreach (var behaviour in ManagedBehaviours)
             {
-                behaviour.Value.ManagedFixedUpdate();
+                behaviour.Value.FixedUpdate();
             }
         }
 
+        /// <summary>
+        /// Instantiate a managed gameobject using this manager
+        /// </summary>
+        /// <param name="go">The prefab of the managed object</param>
+        /// <param name="position">initial position</param>
+        /// <param name="rotation">initial rotation</param>
         protected void InstantiateManagedObject(GameObject go, Vector3 position, Quaternion rotation)
         {
             var newObject = GameObject.Instantiate(go, position, rotation);
