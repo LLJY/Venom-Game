@@ -13,7 +13,7 @@ namespace Turret
         [HideInInspector]public GameObject player;
         [HideInInspector]public Animator animator;
         public GameObject turretTemperature;
-        public Material turretTemperatureMaterialRenderer;
+        [HideInInspector]public Material turretTemperatureMaterialRenderer;
         public GameObject bulletPrefab;
         public float colorChangeTime=1;
 
@@ -27,7 +27,7 @@ namespace Turret
         public TurretShootingState ShootingState;
         public TurretInactiveState InactiveState;
 
-        private void Awake()
+        public override void Awake()
         {
             animator = GetComponent<Animator>();
             ActiveState = new TurretActiveState(this);
@@ -38,10 +38,6 @@ namespace Turret
             InactiveState = new TurretInactiveState(this);
             CurrentState = InactiveState;
             player = GameObject.FindGameObjectWithTag("Player");
-        }
-
-        private void Start()
-        {
             turretTemperatureMaterialRenderer = turretTemperature.GetComponent<Renderer>().material;
         }
 
