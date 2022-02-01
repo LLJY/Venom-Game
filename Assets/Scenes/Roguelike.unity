@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465791, g: 0.4964133, b: 0.57481784, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -135,9 +135,9 @@ GameObject:
   - component: {fileID: 51169443}
   - component: {fileID: 51169442}
   - component: {fileID: 51169441}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: TopWall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -174,7 +174,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 3e88704b023104a829eeeb3954cddbf7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -211,7 +211,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 51169440}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -50.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 10, z: 100}
   m_Children: []
@@ -230,9 +230,9 @@ GameObject:
   - component: {fileID: 432988953}
   - component: {fileID: 432988952}
   - component: {fileID: 432988951}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BottomWall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -269,7 +269,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 3e88704b023104a829eeeb3954cddbf7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -306,7 +306,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 432988950}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 50.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 10, z: 100}
   m_Children: []
@@ -328,7 +328,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!108 &469452485
 Light:
@@ -423,7 +423,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &1011037147
 MeshCollider:
@@ -532,6 +532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turretPrefab: {fileID: 4901873994698784849, guid: 0e75b6602a1e7ce4eb7cbba8afa249ac, type: 3}
+  bulletPrefab: {fileID: 0}
 --- !u!4 &1433640292
 Transform:
   m_ObjectHideFlags: 0
@@ -641,9 +642,9 @@ GameObject:
   - component: {fileID: 1833440925}
   - component: {fileID: 1833440924}
   - component: {fileID: 1833440923}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: RightWall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -680,7 +681,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 3e88704b023104a829eeeb3954cddbf7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -717,9 +718,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1833440922}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 50.5}
-  m_LocalScale: {x: 1, y: 10, z: 100}
+  m_LocalScale: {x: 1, y: 10, z: 100.00002}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
@@ -736,9 +737,9 @@ GameObject:
   - component: {fileID: 2117902003}
   - component: {fileID: 2117902002}
   - component: {fileID: 2117902001}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: LeftWall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -775,7 +776,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 3e88704b023104a829eeeb3954cddbf7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -812,9 +813,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2117902000}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: -50.5}
-  m_LocalScale: {x: 1, y: 10, z: 100}
+  m_LocalScale: {x: 1, y: 10, z: 100.00002}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -831,12 +832,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1769474862}
     - target: {fileID: 1366269620140192534, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 1769474862}
+    - target: {fileID: 1366269620140192534, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
       propertyPath: cameraAngles.x
       value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 1366269620140192534, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
       propertyPath: cameraAngles.y
-      value: 70
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 1366269620140192534, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
       propertyPath: cameraAngles.z
@@ -856,15 +861,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6991139092392845276, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.21078616
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6991139092392845276, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.56999993
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6991139092392845276, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.021613121
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6991139092392845276, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
       propertyPath: m_LocalRotation.w
