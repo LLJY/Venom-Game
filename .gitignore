@@ -22,6 +22,9 @@
 # Visual Studio cache directory
 .vs/
 
+# code cache directory
+.vscode/
+
 # JetBrains cache directory
 .idea/
 
