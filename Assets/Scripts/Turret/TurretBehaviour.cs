@@ -29,6 +29,7 @@ namespace Turret
 
         public override void Awake()
         {
+            base.Awake();
             animator = GetComponent<Animator>();
             ActiveState = new TurretActiveState(this);
             DestroyedState = new TurretDestroyedState(this);
