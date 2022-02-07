@@ -11,6 +11,14 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 78248334, guid: ccd3ac12f7283f042a0e306c84483949, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2670733368905502525, guid: ccd3ac12f7283f042a0e306c84483949, type: 3}
+      propertyPath: m_CullingMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7934805440498194874, guid: ccd3ac12f7283f042a0e306c84483949, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -21,15 +29,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8354306010857919815, guid: ccd3ac12f7283f042a0e306c84483949, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.21078616
+      value: 4.17
       objectReference: {fileID: 0}
     - target: {fileID: 8354306010857919815, guid: ccd3ac12f7283f042a0e306c84483949, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.56999993
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8354306010857919815, guid: ccd3ac12f7283f042a0e306c84483949, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.021613121
+      value: -12.02
       objectReference: {fileID: 0}
     - target: {fileID: 8354306010857919815, guid: ccd3ac12f7283f042a0e306c84483949, type: 3}
       propertyPath: m_LocalRotation.w
@@ -63,5 +71,58 @@ PrefabInstance:
       propertyPath: m_Name
       value: Anxiety Mob
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 78248333, guid: ccd3ac12f7283f042a0e306c84483949, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ccd3ac12f7283f042a0e306c84483949, type: 3}
+--- !u!1 &7660151663757116774 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8699729217457786877, guid: ccd3ac12f7283f042a0e306c84483949, type: 3}
+  m_PrefabInstance: {fileID: 1366269620066241179}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4027818003458540966 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2670733368905502525, guid: ccd3ac12f7283f042a0e306c84483949, type: 3}
+  m_PrefabInstance: {fileID: 1366269620066241179}
+  m_PrefabAsset: {fileID: 0}
+--- !u!195 &1600325543
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7660151663757116774}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &1600325544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7660151663757116774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb1b767d3999465ead0cb327f626df86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableStatefulMb: 1
+  baseBuffRadius: 5
+  baseSpeed: 2
+  animator: {fileID: 4027818003458540966}
+  player: {fileID: 0}
+  avoidRadius: 5
+  _playerTransform: {fileID: 0}
+  agent: {fileID: 0}

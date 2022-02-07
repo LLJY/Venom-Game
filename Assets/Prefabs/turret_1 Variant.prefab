@@ -132,7 +132,7 @@ MonoBehaviour:
   _animator: {fileID: 4901873994689311643}
   _bulletPrefab: {fileID: 2972836088020254703, guid: 0251255e89ecc9842af9b29cdc59dd7c, type: 3}
   rotationSpeed: 2
-  bulletSpeed: 10
+  bulletSpeed: 20
   activeRadius: 15
 --- !u!114 &500198093
 MonoBehaviour:
@@ -154,7 +154,25 @@ MonoBehaviour:
   player: {fileID: 0}
   animator: {fileID: 0}
   turretTemperature: {fileID: 4901873994698784851}
+  turretTemperatureMaterialRenderer: {fileID: 0}
   bulletPrefab: {fileID: 2972836088020254703, guid: 0251255e89ecc9842af9b29cdc59dd7c, type: 3}
+  colorChangeTime: 1
   rotationSpeed: 2
   bulletSpeed: 10
   activeRadius: 20
+--- !u!208 &156673841868148530
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901873994698784849}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
