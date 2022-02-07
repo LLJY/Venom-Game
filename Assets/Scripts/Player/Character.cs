@@ -5,62 +5,66 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 // TODO move camera logic into separate cam script
-public class Character : MonoBehaviour
+namespace Player
 {
-    [SerializeField]private float playerSprintSpeed = 5;
-    [SerializeField]private float characterJumpHeight = 2;
-    
-    // GetComponent assigned variables
-    private CharacterController _characterController;
-    private Animator _animator;
-    private Vector3 _currentCharacterVelocity;
-
-    // Start is called before the first frame update
-    private void Awake()
+    public class Character : MonoBehaviour
     {
-        _characterController = GetComponent<CharacterController>();
-        _animator = GetComponent<Animator>();
-    }
+        [SerializeField] private float playerSprintSpeed = 5;
+        [SerializeField] private float characterJumpHeight = 2;
 
-    void Update()
-    {
-        HandleCharacterMovement();
-    }
+        // GetComponent assigned variables
+        private CharacterController _characterController;
+        private Animator _animator;
+        private Vector3 _currentCharacterVelocity;
 
-    void HandleCharacterMovement()
-    {
-        // ensure to only move the character when grounded
-        if (_characterController.isGrounded)
+        // Start is called before the first frame update
+        private void Awake()
         {
-            var input = new Vector3(Input.GetAxis("Horizontal"), 0,Input.GetAxis("Vertical")).normalized;
-            if (Input.GetKey(KeyCode.LeftShift))
+            _characterController = GetComponent<CharacterController>();
+            _animator = GetComponent<Animator>();
+        }
+
+        void Update()
+        {
+            HandleCharacterMovement();
+        }
+
+        void HandleCharacterMovement()
+        {
+            // ensure to only move the character when grounded
+            if (_characterController.isGrounded)
             {
-                // apply sprint if moving forwards
-                if (input.magnitude > 0)
+                var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
+                if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    input *= playerSprintSpeed;
+                    // apply sprint if moving forwards
+                    if (input.magnitude > 0)
+                    {
+                        input *= playerSprintSpeed;
+                    }
+                }
+
+                // cache the input.magnitude field
+                var inputMag = input.magnitude;
+                transform.rotation = Quaternion.LookRotation(transform.forward + input);
+                _animator.SetBool("Walking", inputMag > 0);
+                _animator.SetFloat("Walking Speed", inputMag);
+
+                // implement jump
+                input.y = _currentCharacterVelocity.y;
+                _currentCharacterVelocity = input;
+                if (Input.GetButtonDown("Jump"))
+                {
+                    _currentCharacterVelocity.y = Mathf.Sqrt(2 * -Physics.gravity.y * characterJumpHeight);
                 }
             }
-            // cache the input.magnitude field
-            var inputMag = input.magnitude;
-            transform.rotation = Quaternion.LookRotation(transform.forward + input);
-            _animator.SetBool("Walking", inputMag > 0);
-            _animator.SetFloat("Walking Speed", inputMag);
-            
-            // implement jump
-            input.y = _currentCharacterVelocity.y;
-            _currentCharacterVelocity = input;
-            if (Input.GetButtonDown("Jump"))
+            else
             {
-                _currentCharacterVelocity.y = Mathf.Sqrt(2* -Physics.gravity.y * characterJumpHeight);
+                // add gravity
+                _currentCharacterVelocity.y += Physics.gravity.y * Time.deltaTime;
             }
-        }
-        else
-        {
-            // add gravity
-            _currentCharacterVelocity.y += Physics.gravity.y * Time.deltaTime;
-        }
 
-        _characterController.Move(_currentCharacterVelocity * Time.deltaTime);
+            _characterController.Move(_currentCharacterVelocity * Time.deltaTime);
+        }
     }
 }
