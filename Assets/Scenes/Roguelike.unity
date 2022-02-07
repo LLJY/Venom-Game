@@ -617,6 +617,20 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7660151663757116774, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
   m_PrefabInstance: {fileID: 7390189885043055806}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1133376409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133376408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cdb678171552ac4e8234452b52fee08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSprintSpeed: 5
+  characterJumpHeight: 2
 --- !u!208 &1133376413
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -721,6 +735,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1133376408}
+    - target: {fileID: 1600325544, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
+      propertyPath: baseSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1600325544, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
+      propertyPath: avoidRadius
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6991139092392845276, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -1236,6 +1258,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1366269620140192533, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1366269620140192534, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
       propertyPath: camera
       value: 
@@ -1320,5 +1346,7 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 1c6a1a7adaf94c44a83af9c4a87fbe8f, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1600325544, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
+    - {fileID: 1600325543, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ddfc7690a133b2642ac0a86c701a2a43, type: 3}
