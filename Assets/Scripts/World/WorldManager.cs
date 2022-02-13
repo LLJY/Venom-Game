@@ -22,7 +22,7 @@ namespace World
             // scale the floor texture and world
             ground.transform.localScale = new Vector3(scale.x, 10, scale.y);
             var textureScale =  scale * 7.5f;
-            ground.GetComponent<Renderer>().material.SetTextureScale("_Tex1",textureScale);
+            ground.GetComponent<Renderer>().material.SetTextureScale("BaseColor",textureScale);
             navMesh.BuildNavMesh();
         }
     }

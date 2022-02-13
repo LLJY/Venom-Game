@@ -8,8 +8,8 @@ public abstract class StatefulMonoBehaviour<T>: MonoBehaviour
 {
     public ReactiveProperty<State<T>> CurrentStateRx = new ReactiveProperty<State<T>>();
 
-    public bool enableStatefulMB = true;
-// make use of CurrentState as a shorthand to access Rx Values from the reactive state
+    public bool enableStatefulMb = true;
+    // make use of CurrentState as a shorthand to access Rx Values from the reactive state
     public State<T> CurrentState
     {
         get => CurrentStateRx.Value;
@@ -36,25 +36,25 @@ public abstract class StatefulMonoBehaviour<T>: MonoBehaviour
 
     public virtual void Update()
     {
-        if (enableStatefulMB)
+        if (enableStatefulMb)
         {
-            CurrentState.Update();
+            CurrentState?.Update();
         }
 
     }
     public virtual void LateUpdate()
     {
-        if (enableStatefulMB)
+        if (enableStatefulMb)
         {
-            CurrentState.LateUpdate();
+            CurrentState?.LateUpdate();
         }
 
     }
     public virtual void FixedUpdate()
     {
-        if (enableStatefulMB)
+        if (enableStatefulMb)
         {
-            CurrentState.FixedUpdate();
+            CurrentState?.FixedUpdate();
 
         }
     }
