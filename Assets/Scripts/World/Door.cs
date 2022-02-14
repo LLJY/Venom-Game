@@ -14,6 +14,7 @@ namespace World
     public class Door : MonoBehaviour
     {
         public GameObject wall;
+        public GameObject adjacentWall;
         public Animator animator;
 
         void Update()
@@ -24,15 +25,19 @@ namespace World
              * update it here after all the scripts have done initializing and then disable the script
              * to prevent further updates.
              *
+             * Set the door's x position such that is is near the adjacent door, so it forces the player to traverse the entire map
+             * from one door to the other instead of just walking straight.
              * Raycast towards the wall that the door is supposed to be at, then set the coordinates to the hit point
              * this ensures that the door is always on the SURFACE of the wall and not inside of it.
              */
+            var wallPos = adjacentWall.transform.position;
+            var doorPos =
+                new Vector3( Mathf.Sign(wallPos.x)*-10+wallPos.x, transform.position.y, transform.position.z);
             var wallLayerMask = 1 << 3;
             RaycastHit hit;
-            var ray = new Ray(transform.position, wall.transform.position - transform.position);
+            var ray = new Ray(doorPos, wall.transform.position - transform.position);
             Physics.Raycast(ray, out hit, 1000f, wallLayerMask);
-
-            transform.position = hit.point + transform.up * -0.1f;
+            transform.position = new Vector3(doorPos.x, doorPos.y, hit.point.z) + transform.up * -0.1f;
             enabled = false;
         }
 
