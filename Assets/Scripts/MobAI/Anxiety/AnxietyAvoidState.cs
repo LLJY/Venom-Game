@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using MobAI.Anxiety;
 using UnityEngine;
 
 namespace MobAI
@@ -21,7 +22,6 @@ namespace MobAI
 
         public override void Update()
         {
-
         }
 
         public override void LateUpdate()
@@ -35,7 +35,7 @@ namespace MobAI
              * the direction vector by 5 degrees and raycasting again.
              */
             var position = _behaviour.transform.position;
-            var direction = position - _behaviour._playerTransform.position;
+            var direction = position - _behaviour.playerTransform.position;
             var ray = new Ray(position, direction);
             for (int i = 0; Physics.Raycast(ray, 5, _wallLayerMask) && i < 72; i++)
             {

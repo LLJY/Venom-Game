@@ -23,8 +23,8 @@ namespace MobAI.Harm
 
         public override void Update()
         {
-            _behaviour.agent.SetDestination(_behaviour._playerTransform.position);
-            if (Vector3.Distance(_behaviour._playerTransform.position, _behaviour.transform.position) < 2)
+            _behaviour.agent.SetDestination(_behaviour.playerTransform.position);
+            if (Vector3.Distance(_behaviour.playerTransform.position, _behaviour.transform.position) < 2)
             {
                 _behaviour.agent.isStopped = true;
                 if (_attackCoroutine == null)
@@ -42,8 +42,8 @@ namespace MobAI.Harm
         {
             _behaviour.animator.SetTrigger("Sword Slash");
             // damage player wh
-            if (Vector3.Distance(_behaviour._playerTransform.position, _behaviour.transform.position) < 2 &&
-                Vector3.Angle(_behaviour._playerTransform.position, _behaviour.transform.position) < 50)
+            if (Vector3.Distance(_behaviour.playerTransform.position, _behaviour.transform.position) < 2 &&
+                Vector3.Angle(_behaviour.playerTransform.position, _behaviour.transform.position) < 50)
             {
                 MainThreadDispatcher.StartCoroutine(GameCache.playerScriptStatic.DamagePlayer(_behaviour.baseAttackDamage));
             }

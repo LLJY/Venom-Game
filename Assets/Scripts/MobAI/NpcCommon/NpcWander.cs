@@ -1,34 +1,33 @@
 using System.Collections;
+using MobAI.NpcCommon;
 using UniRx;
 using UnityEngine;
 
 namespace MobAI
 {
-    public class AnxietyWanderState: State<AnxietyNpc>
+    public class NpcWander<T>: State<T>
+    where T: BaseNpc<T>
     {
-        private bool _wanderCoroutineRunning = false;
-        public AnxietyWanderState(AnxietyNpc behaviour) : base(behaviour)
+        private Coroutine _wanderCoroutine;
+        public float wanderRadius;
+        public NpcWander(T behaviour, float radius) : base(behaviour)
         {
+            wanderRadius = radius;
         }
 
         public override void Prepare()
         {
-            Debug.Log("Anxiety Wander State");
-            var wander = new Vector3(Random.Range(1f, 5f), 0, Random.Range(1f, 5f));
-            _behaviour.agent.SetDestination(_behaviour.transform.position + wander);
+            Debug.Log($"{typeof(T).FullName} Wander State");
         }
 
         public override void CleanUp()
         {
         }
-
+        
         public override void Update()
         {
-            if (!_wanderCoroutineRunning && _behaviour.agent.velocity.magnitude == 0)
-            {
-                Debug.Log("moving...");
-                MainThreadDispatcher.StartCoroutine(WanderMove());
-            }
+            if (_wanderCoroutine != null || _behaviour.agent.velocity.magnitude > 0) return;
+            _wanderCoroutine = MainThreadDispatcher.StartCoroutine(WanderMove());
         }
 
         /// <summary>
@@ -37,13 +36,11 @@ namespace MobAI
         /// </summary>
         private IEnumerator WanderMove()
         {
-            _wanderCoroutineRunning = true;
             var waitSeconds = Random.Range(0, 10) * 0.5f;
-            Debug.Log("waiting for seconds" + waitSeconds);
             yield return new WaitForSeconds(waitSeconds);
-            var wander = new Vector3(Random.Range(-5f, 5f), 0, Random.Range(-5f, 5f));
+            var wander = new Vector3(Random.Range(-wanderRadius, wanderRadius), 0, Random.Range(-wanderRadius, wanderRadius));
             _behaviour.agent.SetDestination(_behaviour.transform.position + wander);
-            _wanderCoroutineRunning = false;
+            _wanderCoroutine = null;
         }
 
         public override void LateUpdate()

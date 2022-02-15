@@ -1,25 +1,17 @@
+using MobAI.NpcCommon;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace MobAI.Harm
 {
-    public class HarmNpc: StatefulMonoBehaviour<HarmNpc>
+    public class HarmNpc: BaseNpc<HarmNpc>
     {
         // inspector variables
         public int baseAttackDamage = 5;
-        public float baseSpeed = 2;
-        public Animator animator;
-        public GameObject player;
         public float senseRadius = 5;
 
-        // cache variables for performance
-        [HideInInspector]public Transform _playerTransform;
-        
-        // runtime assigned varaibles
-        [HideInInspector]public NavMeshAgent agent;
-        
         // NPC states
-        private HarmWanderState _wanderState;
+        private NpcWander<HarmNpc> _wanderState;
         private HarmAttackState _attackState;
 
         // TODO randomize all values
@@ -30,30 +22,24 @@ namespace MobAI.Harm
             enabled = true;
             animator = GetComponent<Animator>();
             
-            _wanderState = new HarmWanderState(this);
+            _wanderState = new NpcWander<HarmNpc>(this, 5f);
             _attackState = new HarmAttackState(this);
         }
 
-        private void Start()
+        public override void Start()
         {
-            agent = GetComponent<NavMeshAgent>();
-            agent.speed = baseSpeed;
+            base.Start();
             CurrentState = _wanderState;
-            
-            _playerTransform = player.transform;
             // make sure the harm NPC always walks with a sword equipped
             animator.SetBool("Sword Equipped", true);
         }
         
         public override void Update() {
+            base.Update();
             CurrentState.Update();
-            var walkSpeed = agent.velocity.magnitude;
-            animator.SetBool("Walking", walkSpeed > 0);
-            animator.SetFloat("Walking Speed", walkSpeed);
-
+            
             // ANYSTATE transitions
-
-            if (Vector3.Distance(transform.position, _playerTransform.position) < senseRadius)
+            if (Vector3.Distance(transform.position, playerTransform.position) < senseRadius)
             {
                 if (CurrentState != _attackState)
                 {

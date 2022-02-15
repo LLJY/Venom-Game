@@ -1,64 +1,44 @@
-﻿using System;
+﻿using MobAI.NpcCommon;
 using UnityEngine;
 using UnityEngine.AI;
-using Random = UnityEngine.Random;
 
-namespace MobAI
+namespace MobAI.Anxiety
 {
     /// <summary>
     /// Anxiety NPC will try to stay away from the player, it does not have any attack capability
     /// However, it will give all nearby mobs a buff
     /// </summary>
-    public class AnxietyNpc: StatefulMonoBehaviour<AnxietyNpc>
+    public class AnxietyNpc: BaseNpc<AnxietyNpc>
     {
         // inspector variables
         public float baseBuffRadius = 5;
-        public float baseSpeed = 2;
-        public Animator animator;
-        public GameObject player;
         public float avoidRadius = 5;
 
-        // cache variables for performance
-        [HideInInspector]public Transform _playerTransform;
-        
-        // runtime assigned varaibles
-        [HideInInspector]public NavMeshAgent agent;
-        
         // NPC states
-        private AnxietyWanderState _wanderState;
         private AnxietyAvoidState _avoidState;
+        private NpcWander<AnxietyNpc> _wanderState;
 
         // TODO randomize all values
         public override void Awake()
         {
             base.Awake();
-            // we are not using a manager, override the manager settings
-            enabled = true;
-            animator = GetComponent<Animator>();
-            
-            _wanderState = new AnxietyWanderState(this);
+            _wanderState = new NpcWander<AnxietyNpc>(this, 5);
             _avoidState = new AnxietyAvoidState(this);
         }
 
-        private void Start()
+        public override void Start()
         {
-            agent = GetComponent<NavMeshAgent>();
-            agent.speed = baseSpeed;
+            base.Start();
             CurrentState = _wanderState;
-
-            _playerTransform = player.transform;
         }
 
         public override void Update() {
-            CurrentState.Update();
-            var walkSpeed = agent.velocity.magnitude;
-            var horizontalSpeed = agent.velocity.x;
-            animator.SetBool("Walking", walkSpeed > 0);
-            animator.SetFloat("Walking Speed", walkSpeed);
+            base.Update();
+            CurrentState?.Update();
 
             // ANYSTATE transitions
 
-            if (Vector3.Distance(transform.position, _playerTransform.position) < avoidRadius)
+            if (Vector3.Distance(transform.position, playerTransform.position) < avoidRadius)
             {
                 if (CurrentState != _avoidState)
                 {

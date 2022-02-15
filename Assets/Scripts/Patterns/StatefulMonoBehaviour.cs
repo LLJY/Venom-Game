@@ -31,7 +31,7 @@ public abstract class StatefulMonoBehaviour<T>: MonoBehaviour
     public virtual void Awake()
     {
         // run stateful MBs using a manager
-        enabled = false;
+        enabled = true;
     }
 
     public virtual void Update()
