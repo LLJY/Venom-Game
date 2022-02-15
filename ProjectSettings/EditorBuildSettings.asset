@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/StupidGameScene.unity
+    guid: 9cfa8458e20115149bb4941d3ad574b0
   m_configObjects: {}

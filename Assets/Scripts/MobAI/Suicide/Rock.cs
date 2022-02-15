@@ -77,11 +77,11 @@ namespace MobAI.Suicide
             controller.enabled = true;
             rb.isKinematic = true;
         }
+        
         /// <summary>
         /// Coroutine that triggers the SuicideNpc's animation and then resets the rock's scale and position.
         /// </summary>
         /// <returns></returns>
-        
         public IEnumerator ResetRock()
         {
             /*
@@ -90,12 +90,15 @@ namespace MobAI.Suicide
              */
             if (!_rb.isKinematic)
             {
+                var renderer = _rb.GetComponent<MeshRenderer>();
+                renderer.enabled = false;
                 suicideAnimator.SetTrigger("Pick Up");
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(1.8f);
                 transform.SetParent(_parentTransform, false);
                 transform.localScale = _originalScale;
                 _rb.isKinematic = true;
                 _rb.transform.localPosition = Vector3.zero;
+                renderer.enabled = true;
             }
         }
 
