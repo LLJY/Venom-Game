@@ -6,14 +6,16 @@ namespace MobAI.Harm
 {
     public class HarmNpc: BaseNpc<HarmNpc>
     {
-        // inspector variables
+        #region Inspector Assigned Variables
         public int baseAttackDamage = 5;
         public float senseRadius = 5;
-
-        // NPC states
+        #endregion
+        
+        #region States
         private NpcWander<HarmNpc> _wanderState;
         private HarmAttackState _attackState;
-
+        #endregion
+        
         // TODO randomize all values
         public override void Awake()
         {
@@ -30,6 +32,7 @@ namespace MobAI.Harm
         {
             base.Start();
             CurrentState = _wanderState;
+            
             // make sure the harm NPC always walks with a sword equipped
             animator.SetBool("Sword Equipped", true);
         }
@@ -37,8 +40,8 @@ namespace MobAI.Harm
         public override void Update() {
             base.Update();
             CurrentState.Update();
-            
-            // ANYSTATE transitions
+
+            #region AnyState Transitions
             if (Vector3.Distance(transform.position, playerTransform.position) < senseRadius)
             {
                 if (CurrentState != _attackState)
@@ -50,6 +53,8 @@ namespace MobAI.Harm
             {
                 CurrentState = _wanderState;
             }
+            #endregion
+
         }
     }
 }

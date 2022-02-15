@@ -17,12 +17,11 @@ namespace MobAI.Harm
             Debug.Log("Harm NPC attack state");
         }
 
-        public override void CleanUp()
-        {
-        }
-
         public override void Update()
         {
+            /*
+             * Go to the player, if within distance of 2, attack the player
+             */
             _behaviour.agent.SetDestination(_behaviour.playerTransform.position);
             if (Vector3.Distance(_behaviour.playerTransform.position, _behaviour.transform.position) < 2)
             {
@@ -40,8 +39,10 @@ namespace MobAI.Harm
 
         private IEnumerator Attack()
         {
+            /*
+             * Ensure that the attack is valid, then damage the player.
+             */
             _behaviour.animator.SetTrigger("Sword Slash");
-            // damage player wh
             if (Vector3.Distance(_behaviour.playerTransform.position, _behaviour.transform.position) < 2 &&
                 Vector3.Angle(_behaviour.playerTransform.position, _behaviour.transform.position) < 50)
             {
@@ -52,6 +53,12 @@ namespace MobAI.Harm
             _attackCoroutine = null;
         }
 
+        #region Unused Event Functions
+
+        public override void CleanUp()
+        {
+        }
+        
         public override void LateUpdate()
         {
         }
@@ -59,5 +66,9 @@ namespace MobAI.Harm
         public override void FixedUpdate()
         {
         }
+
+        #endregion
+
+
     }
 }

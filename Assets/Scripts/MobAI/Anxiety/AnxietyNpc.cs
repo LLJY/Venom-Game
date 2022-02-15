@@ -10,14 +10,16 @@ namespace MobAI.Anxiety
     /// </summary>
     public class AnxietyNpc: BaseNpc<AnxietyNpc>
     {
-        // inspector variables
+        #region Inspector Assigned Variables
         public float baseBuffRadius = 5;
         public float avoidRadius = 5;
+        #endregion
 
-        // NPC states
+        #region States
         private AnxietyAvoidState _avoidState;
         private NpcWander<AnxietyNpc> _wanderState;
-
+        #endregion
+        
         // TODO randomize all values
         public override void Awake()
         {
@@ -36,7 +38,7 @@ namespace MobAI.Anxiety
             base.Update();
             CurrentState?.Update();
 
-            // ANYSTATE transitions
+            #region AnyState Transitions
 
             if (Vector3.Distance(transform.position, playerTransform.position) < avoidRadius)
             {
@@ -49,6 +51,10 @@ namespace MobAI.Anxiety
             {
                 CurrentState = _wanderState;
             }
+
+            #endregion
+
+
         }
         
     }
