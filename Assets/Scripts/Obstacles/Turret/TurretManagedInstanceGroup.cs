@@ -1,8 +1,7 @@
-﻿using System;
-using Patterns;
+﻿using Patterns;
 using UnityEngine;
 
-namespace Turret
+namespace Obstacles.Turret
 {
     public class TurretManagedInstanceGroup: ManagedInstanceGroup<TurretBehaviour>
     {

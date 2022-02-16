@@ -46,7 +46,7 @@ namespace MobAI.Harm
             if (Vector3.Distance(_behaviour.playerTransform.position, _behaviour.transform.position) < 2 &&
                 Vector3.Angle(_behaviour.playerTransform.position, _behaviour.transform.position) < 50)
             {
-                MainThreadDispatcher.StartCoroutine(GameCache.playerScriptStatic.DamagePlayer(_behaviour.baseAttackDamage));
+                MainThreadDispatcher.StartCoroutine(GameCache.playerScript.DamagePlayer(_behaviour.baseAttackDamage));
             }
 
             yield return new WaitForSeconds(1f);

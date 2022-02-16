@@ -885,6 +885,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6581857243719651565, guid: 82e12b2e45d289748aa6210f29819a25, type: 3}
+      propertyPath: m_Acceleration
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82e12b2e45d289748aa6210f29819a25, type: 3}
 --- !u!1 &954724063 stripped
@@ -1478,6 +1482,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7106022816667607, guid: caee25cd9afcdd3b3b4850e67633ced8, type: 3}
+      propertyPath: m_Acceleration
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 2715754251573236302, guid: caee25cd9afcdd3b3b4850e67633ced8, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1683,6 +1691,10 @@ PrefabInstance:
     - target: {fileID: 5742818958941611697, guid: 2e3ef150eddff76d5b2e41ae90615e7d, type: 3}
       propertyPath: m_Name
       value: Anxiety Mob
+      objectReference: {fileID: 0}
+    - target: {fileID: 8262664298621659660, guid: 2e3ef150eddff76d5b2e41ae90615e7d, type: 3}
+      propertyPath: m_Acceleration
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e3ef150eddff76d5b2e41ae90615e7d, type: 3}

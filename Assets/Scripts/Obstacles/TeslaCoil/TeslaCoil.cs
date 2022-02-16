@@ -1,10 +1,9 @@
-using System;
 using System.Collections;
 using UniRx;
 using UnityEngine;
 using UnityEngine.VFX;
 
-namespace TeslaCoil
+namespace Obstacles.TeslaCoil
 {
     public class TeslaCoil: MonoBehaviour
     {

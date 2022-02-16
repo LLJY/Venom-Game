@@ -1,7 +1,7 @@
 ﻿using UniRx;
 using UnityEngine;
 
-namespace Turret
+namespace Obstacles.Turret
 {
     public class TurretInactiveState: State<TurretBehaviour>
     {

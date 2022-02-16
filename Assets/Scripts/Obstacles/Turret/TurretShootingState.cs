@@ -1,9 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
-namespace Turret
+namespace Obstacles.Turret
 {
     public class TurretShootingState : State<TurretBehaviour>
     {

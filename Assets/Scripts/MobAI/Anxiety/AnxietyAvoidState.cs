@@ -1,8 +1,6 @@
-using System.Threading.Tasks;
-using MobAI.Anxiety;
 using UnityEngine;
 
-namespace MobAI
+namespace MobAI.Anxiety
 {
     public class AnxietyAvoidState: State<AnxietyNpc>
     {

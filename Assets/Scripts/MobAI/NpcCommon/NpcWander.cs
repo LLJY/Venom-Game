@@ -1,9 +1,8 @@
 using System.Collections;
-using MobAI.NpcCommon;
 using UniRx;
 using UnityEngine;
 
-namespace MobAI
+namespace MobAI.NpcCommon
 {
     public class NpcWander<T>: State<T>
     where T: BaseNpc<T>

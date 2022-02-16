@@ -41,8 +41,13 @@ namespace MobAI.NpcCommon
 
             if (baseHealth <= 0)
             {
-                // TODO play die animation
+                animator.SetTrigger("Death");
             }
+        }
+
+        public void DamageNpc()
+        {
+            
         }
     }
 }

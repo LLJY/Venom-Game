@@ -1,4 +1,4 @@
-﻿namespace Turret
+﻿namespace Obstacles.Turret
 {
     public class TurretDestroyedState: State<TurretBehaviour>
     {
