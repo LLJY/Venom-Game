@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UniRx;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace Obstacles.Turret
     public class TurretShootingState : State<TurretBehaviour>
     {
         private bool shouldRunCoroutine;
+        private IDisposable _colourCoroutine;
 
         public TurretShootingState(TurretBehaviour behaviour) : base(behaviour)
         {
@@ -17,13 +19,14 @@ namespace Obstacles.Turret
             Debug.Log("Shooting State");
             shouldRunCoroutine = true;
             _behaviour.animator.SetBool("Shoot", true);
-            MainThreadDispatcher.StartCoroutine(_behaviour.LerpTurretColour(Color.red));
+            _colourCoroutine = _behaviour.LerpTurretColour(Color.red).ToObservable().Subscribe();
         }
 
         public override void CleanUp()
         {
             shouldRunCoroutine = false;
             _behaviour.animator.SetBool("Shoot", false);
+            _colourCoroutine?.Dispose();
         }
 
         public override void Update()

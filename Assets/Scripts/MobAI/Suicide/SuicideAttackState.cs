@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UniRx;
 using UnityEngine;
@@ -6,7 +7,7 @@ namespace MobAI.Suicide
 {
     public class SuicideAttackState: State<SuicideNpc>
     {
-        private Coroutine _attackCoroutine = null;
+        private IDisposable _attackCoroutine = null;
         public SuicideAttackState(SuicideNpc behaviour) : base(behaviour)
         {
         }
@@ -18,6 +19,7 @@ namespace MobAI.Suicide
 
         public override void CleanUp()
         {
+            _attackCoroutine?.Dispose();
         }
 
         public override void Update()
@@ -28,7 +30,7 @@ namespace MobAI.Suicide
                 _behaviour.agent.isStopped = true;
                 if (_attackCoroutine == null)
                 {
-                    _attackCoroutine = MainThreadDispatcher.StartCoroutine(Attack());
+                    _attackCoroutine = Attack().ToObservable().Subscribe();
                 }
             }
             else

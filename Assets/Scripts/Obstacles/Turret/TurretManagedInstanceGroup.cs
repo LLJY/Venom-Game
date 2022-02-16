@@ -7,9 +7,9 @@ namespace Obstacles.Turret
     {
         public GameObject turretPrefab;
         public GameObject bulletPrefab;
-        private void Start()
+        public void Instantiate(Vector3 pos)
         {
-            InstantiateManagedObject(turretPrefab, new Vector3(5, 0.5f, 5), Quaternion.identity);
+            InstantiateManagedObject(turretPrefab, pos, Quaternion.identity);
         }
     }
 }

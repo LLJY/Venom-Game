@@ -1,10 +1,13 @@
-﻿using UniRx;
+﻿using System;
+using UniRx;
 using UnityEngine;
 
 namespace Obstacles.Turret
 {
     public class TurretInactiveState: State<TurretBehaviour>
     {
+        private IDisposable _colourCoroutine;
+
         public TurretInactiveState(TurretBehaviour behaviour) : base(behaviour)
         {
         }
@@ -12,11 +15,12 @@ namespace Obstacles.Turret
         public override void Prepare()
         {
             Debug.Log("Turret Inactive State");
-            MainThreadDispatcher.StartCoroutine(_behaviour.LerpTurretColour(Color.green));
+            _colourCoroutine = _behaviour.LerpTurretColour(Color.green).ToObservable().Subscribe();
         }
 
         public override void CleanUp()
         {
+            _colourCoroutine?.Dispose();
         }
 
         public override void Update()

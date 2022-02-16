@@ -1,11 +1,13 @@
+using System;
 using System.Collections;
 using UniRx;
 using UnityEngine;
 using UnityEngine.VFX;
+using Random = UnityEngine.Random;
 
 namespace Obstacles.TeslaCoil
 {
-    public class TeslaCoil: MonoBehaviour
+    public class TeslaCoil: StatefulMonoBehaviour<TeslaCoil>
     {
         [SerializeField]private VisualEffect lightningVfx;
         [SerializeField] private Light light;
@@ -16,16 +18,20 @@ namespace Obstacles.TeslaCoil
         private float _defaultImpactOffset = -6.25f;
 
         private bool _arcingToObject = false;
-        private void Start()
+
+        private IDisposable _periodicArcCoroutine;
+        private IDisposable _arcToObjectCoroutine;
+        public override void Awake()
         {
+            base.Awake();
             _lightningVfxTransform = lightningVfx.transform;
             _lightningDefaultRotation = _lightningVfxTransform.rotation;
-            MainThreadDispatcher.StartCoroutine(PeriodicArc());
+            _periodicArcCoroutine = PeriodicArc().ToObservable().Subscribe();
         }
 
         IEnumerator PeriodicArc()
         {
-            while (enabled)
+            while (isActiveAndEnabled)
             {
                 if (!_arcingToObject)
                 {
@@ -34,7 +40,9 @@ namespace Obstacles.TeslaCoil
                     _lightningVfxTransform.rotation = _lightningDefaultRotation;
                     yield return MakeArc();
                 }
-                yield return new WaitForSeconds(2f);
+
+                var randomArcTime = Random.Range(3, 10);
+                yield return new WaitForSeconds(randomArcTime);
             }
         }
 
@@ -62,7 +70,14 @@ namespace Obstacles.TeslaCoil
         {
             if (_arcingToObject) return;
             Debug.Log($"arcing to object... {other.name}");
-            MainThreadDispatcher.StartCoroutine(ArcToObject(other.transform.position));
+            _arcToObjectCoroutine = ArcToObject(other.transform.position).ToObservable().Subscribe();
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            _periodicArcCoroutine?.Dispose();
+            _arcToObjectCoroutine?.Dispose();
         }
     }
 }

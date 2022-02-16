@@ -16,6 +16,10 @@ namespace World
         public GameObject wall;
         public GameObject adjacentWall;
         public Animator animator;
+        public bool isEntrance = false;
+        
+        // without this, the trigger may trigger more than once, causing the game to freak out
+        private bool _exit = false;
 
         void Update()
         {
@@ -47,6 +51,19 @@ namespace World
             if (other.gameObject.tag.Equals("Player"))
             {
                 animator.SetBool("open", true);
+            }
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            if (Vector3.Distance(transform.position, other.transform.position) > 2 || _exit) return;
+            if (isEntrance)
+            {
+                GameCache.worldManagerScript.PreviousWorld();
+            }
+            else
+            {
+                GameCache.worldManagerScript.NextWorld();
             }
         }
 

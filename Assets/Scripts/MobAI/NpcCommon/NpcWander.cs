@@ -1,13 +1,15 @@
+using System;
 using System.Collections;
 using UniRx;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace MobAI.NpcCommon
 {
     public class NpcWander<T>: State<T>
     where T: BaseNpc<T>
     {
-        private Coroutine _wanderCoroutine;
+        private IDisposable _wanderCoroutine;
         public float wanderRadius;
         public NpcWander(T behaviour, float radius) : base(behaviour)
         {
@@ -21,12 +23,13 @@ namespace MobAI.NpcCommon
 
         public override void CleanUp()
         {
+            _wanderCoroutine?.Dispose();
         }
         
         public override void Update()
         {
             if (_wanderCoroutine != null || _behaviour.agent.velocity.magnitude > 0) return;
-            _wanderCoroutine = MainThreadDispatcher.StartCoroutine(WanderMove());
+            _wanderCoroutine = WanderMove().ToObservable().Subscribe();
         }
 
         /// <summary>

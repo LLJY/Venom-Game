@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Obstacles.PressurePlate
 {
-    public class PressurePlate : MonoBehaviour
+    public class PressurePlate : StatefulMonoBehaviour<PressurePlate>
     {
         // inspector assigned variables
         [SerializeField] private GameObject spikes;
@@ -21,13 +21,9 @@ namespace Obstacles.PressurePlate
 
         private bool isRaised = false;
         // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
 
         // Update is called once per frame
-        void Update()
+        public override void Update()
         {
             if (objectsInTrigger.Count > 0 && !isRaised)
             {

@@ -36,9 +36,9 @@ namespace Obstacles.Turret
             ShootingState = new TurretShootingState(this);
 
             InactiveState = new TurretInactiveState(this);
-            CurrentState = InactiveState;
             player = GameObject.FindGameObjectWithTag("Player");
             turretTemperatureMaterialRenderer = turretTemperature.GetComponent<Renderer>().material;
+            CurrentState = InactiveState;
         }
 
         /// <summary>

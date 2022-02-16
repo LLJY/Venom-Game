@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UniRx;
@@ -7,7 +8,8 @@ namespace MobAI.Harm
 {
     public class HarmAttackState: State<HarmNpc>
     {
-        private Coroutine _attackCoroutine = null;
+        private IDisposable _attackCoroutine = null;
+        private IDisposable _damagePlayerCoroutine = null;
         public HarmAttackState(HarmNpc behaviour) : base(behaviour)
         {
         }
@@ -15,6 +17,11 @@ namespace MobAI.Harm
         public override void Prepare()
         {
             Debug.Log("Harm NPC attack state");
+        }
+        public override void CleanUp()
+        {
+            _damagePlayerCoroutine?.Dispose();
+            _attackCoroutine?.Dispose();
         }
 
         public override void Update()
@@ -26,10 +33,7 @@ namespace MobAI.Harm
             if (Vector3.Distance(_behaviour.playerTransform.position, _behaviour.transform.position) < 2)
             {
                 _behaviour.agent.isStopped = true;
-                if (_attackCoroutine == null)
-                {
-                    _attackCoroutine = MainThreadDispatcher.StartCoroutine(Attack());
-                }
+                _attackCoroutine ??= Attack().ToObservable().Subscribe();
             }
             else
             {
@@ -46,7 +50,8 @@ namespace MobAI.Harm
             if (Vector3.Distance(_behaviour.playerTransform.position, _behaviour.transform.position) < 2 &&
                 Vector3.Angle(_behaviour.playerTransform.position, _behaviour.transform.position) < 50)
             {
-                MainThreadDispatcher.StartCoroutine(GameCache.playerScript.DamagePlayer(_behaviour.baseAttackDamage));
+                _damagePlayerCoroutine = GameCache.playerScript.DamagePlayer(_behaviour.baseAttackDamage).ToObservable()
+                    .Subscribe();
             }
 
             yield return new WaitForSeconds(1f);
@@ -54,11 +59,6 @@ namespace MobAI.Harm
         }
 
         #region Unused Event Functions
-
-        public override void CleanUp()
-        {
-        }
-        
         public override void LateUpdate()
         {
         }
@@ -66,7 +66,6 @@ namespace MobAI.Harm
         public override void FixedUpdate()
         {
         }
-
         #endregion
 
 

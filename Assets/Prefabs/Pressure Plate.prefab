@@ -123,12 +123,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23455aed4dc8c53f29fb00c93d2589a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableStatefulMb: 1
   spikes: {fileID: 9018178032194190144}
   spikeOffsetUp: 0.5
   spikeOffsetDown: -3.3
   plateOffsetUp: 0.1
   plateOffsetDown: -0.12
-  lerpTime: 0.3
+  lerpTime: 0.1
 --- !u!1001 &8207362760429225489
 PrefabInstance:
   m_ObjectHideFlags: 0

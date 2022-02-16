@@ -58,5 +58,9 @@ public abstract class StatefulMonoBehaviour<T>: MonoBehaviour
 
         }
     }
-    
+
+    public virtual void OnDestroy()
+    {
+        CurrentState?.CleanUp();
+    }
 }

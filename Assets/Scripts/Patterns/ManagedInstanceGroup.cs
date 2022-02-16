@@ -47,7 +47,7 @@ namespace Patterns
         /// <param name="go">The prefab of the managed object</param>
         /// <param name="position">initial position</param>
         /// <param name="rotation">initial rotation</param>
-        protected void InstantiateManagedObject(GameObject go, Vector3 position, Quaternion rotation)
+        public virtual void InstantiateManagedObject(GameObject go, Vector3 position, Quaternion rotation)
         {
             var newObject = GameObject.Instantiate(go, position, rotation);
             ManagedBehaviours.Add(newObject.GetInstanceID(), newObject.GetComponent<StatefulMonoBehaviour<T>>());
