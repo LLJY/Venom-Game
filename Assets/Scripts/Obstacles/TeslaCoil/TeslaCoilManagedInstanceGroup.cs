@@ -10,7 +10,7 @@ namespace Obstacles.TeslaCoil
 
         public void Instantiate(Vector3 pos)
         {
-            InstantiateManagedObject(teslaCoilPrefab, pos, Quaternion.Euler(new Vector3(-180f, 1.91f, 0)));
+            InstantiateManagedObject(teslaCoilPrefab, new Vector3(pos.x, 1.81f, pos.z), Quaternion.Euler(new Vector3(-180f, 0, 0)));
         }
     }
 }

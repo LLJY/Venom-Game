@@ -24,6 +24,7 @@ namespace World
         private void Start()
         {
             SetDoorPosition();
+            _exit = false;
             enabled = false;
         }
 
@@ -45,14 +46,15 @@ namespace World
 
         private void OnTriggerStay(Collider other)
         {
-            if (Vector3.Distance(transform.position, other.transform.position) > 2 || _exit) return;
+            if (Vector3.Distance(transform.position, other.transform.position) > 2 || _exit || !other.gameObject.tag.Equals("Player", StringComparison.InvariantCultureIgnoreCase)) return;
+            _exit = true;
             if (isEntrance)
             {
-                GameCache.worldManagerScript.PreviousWorld();
+                WorldManager.PreviousWorld();
             }
             else
             {
-                GameCache.worldManagerScript.NextWorld();
+                WorldManager.NextWorld();
             }
         }
 

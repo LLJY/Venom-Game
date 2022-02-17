@@ -13,7 +13,7 @@ namespace World
             // allow for overflows
             unchecked
             {
-                _currentWorldIndex++;
+                ++_currentWorldIndex;
                 return GenerateSeed();
 
             }
@@ -23,15 +23,16 @@ namespace World
             // allow for overflows
             unchecked
             {
-                _currentWorldIndex--;
+                --_currentWorldIndex;
                 return GenerateSeed();
             }
         }
         private static int GenerateSeed()
         {
+            Debug.Log($"random {_currentWorldIndex}");
             unchecked
             {
-                CurrentSeed = Random.Range(int.MinValue, int.MaxValue) * 256;
+                CurrentSeed = Random.Range(int.MinValue, int.MaxValue) * (_currentWorldIndex * 256);
                 Random.InitState(CurrentSeed);
                 return CurrentSeed;
             }
