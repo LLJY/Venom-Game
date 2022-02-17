@@ -11,7 +11,7 @@ namespace MobAI.Suicide
         // inspector variables
         public float baseAttackDamage = 5;
         public float senseRadius = 50;
-        public float attackRadius = 50;
+        public float attackRadius = 25;
         public float rockSpeed = 5;
         public Rigidbody rock;
         public Transform rockParentTransform;

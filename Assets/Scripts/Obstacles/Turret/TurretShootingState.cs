@@ -16,7 +16,6 @@ namespace Obstacles.Turret
 
         public override void Prepare()
         {
-            Debug.Log("Shooting State");
             shouldRunCoroutine = true;
             _behaviour.animator.SetBool("Shoot", true);
             _colourCoroutine = _behaviour.LerpTurretColour(Color.red).ToObservable().Subscribe();

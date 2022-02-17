@@ -28,14 +28,12 @@ namespace Obstacles.PressurePlate
             if (objectsInTrigger.Count > 0 && !isRaised)
             {
                 isRaised = true;
-                Debug.Log("Spikes Up");
                 if (_coroutine != null) return;
                 _coroutine = MainThreadDispatcher.StartCoroutine(SetSpikePosition(plateOffsetDown, spikeOffsetUp));
             }
             else if (objectsInTrigger.Count == 0 && isRaised)
             {
                 isRaised = false;
-                Debug.Log("Spikes Down");
                 if (_coroutine != null) return;
                 _coroutine = MainThreadDispatcher.StartCoroutine(SetSpikePosition(plateOffsetUp, spikeOffsetDown));
             }

@@ -31,7 +31,7 @@ namespace MobAI.Suicide
 
         private void OnCollisionEnter(Collision collision)
         {
-            Debug.Log(collision.gameObject.name);
+            if (collision.gameObject.name.StartsWith("Suicide", StringComparison.InvariantCultureIgnoreCase)) return;
             MainThreadDispatcher.StartCoroutine(ResetRock());
             Physics.OverlapSphereNonAlloc(transform.position, explosionRadius, _overlapResults, _damageableLayerMask);
             foreach (var overlap in _overlapResults)
@@ -99,6 +99,7 @@ namespace MobAI.Suicide
                 _rb.isKinematic = true;
                 _rb.transform.localPosition = Vector3.zero;
                 renderer.enabled = true;
+                suicideAnimator.ResetTrigger("Pick Up");
             }
         }
 

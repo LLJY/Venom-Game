@@ -14,7 +14,7 @@ namespace MobAI.Suicide
 
         public override void Prepare()
         {
-            Debug.Log("Harm NPC attack state");
+            Debug.Log("Suicide NPC attack state");
         }
 
         public override void CleanUp()
@@ -25,8 +25,9 @@ namespace MobAI.Suicide
         public override void Update()
         {
             _behaviour.agent.SetDestination(_behaviour.playerTransform.position);
-            if (Vector3.Distance(_behaviour.playerTransform.position, _behaviour.transform.position) < _behaviour.attackRadius / 2)
+            if (Vector3.Distance(_behaviour.playerTransform.position, _behaviour.transform.position) < _behaviour.attackRadius)
             {
+                // Debug.Log("should attack");
                 _behaviour.agent.isStopped = true;
                 if (_attackCoroutine == null)
                 {
@@ -50,8 +51,8 @@ namespace MobAI.Suicide
                 _behaviour.rock.transform.SetParent(null, true);
                 var directionToPlayer = GameCache.playerStatic.transform.position - _behaviour.transform.position;
                 _behaviour.rock.AddForce(directionToPlayer.normalized*_behaviour.rockSpeed, ForceMode.VelocityChange);
-                yield return new WaitForSeconds(2f);
             }
+            yield return new WaitForSeconds(2f);
             _attackCoroutine = null;
         }
         

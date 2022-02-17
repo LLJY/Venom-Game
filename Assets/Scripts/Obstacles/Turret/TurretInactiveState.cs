@@ -14,7 +14,6 @@ namespace Obstacles.Turret
 
         public override void Prepare()
         {
-            Debug.Log("Turret Inactive State");
             _colourCoroutine = _behaviour.LerpTurretColour(Color.green).ToObservable().Subscribe();
         }
 

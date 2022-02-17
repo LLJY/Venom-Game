@@ -124,6 +124,7 @@ MonoBehaviour:
   swordSlash2: {fileID: 5874103583354819466}
   sword: {fileID: 7967584874480366415}
   health: 20
+  _characterRenderer: {fileID: 0}
 --- !u!1001 &2140161093281131078
 PrefabInstance:
   m_ObjectHideFlags: 0

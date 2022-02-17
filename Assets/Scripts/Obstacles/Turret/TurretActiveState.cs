@@ -13,7 +13,6 @@ namespace Obstacles.Turret
 
         public override void Prepare()
         {
-            Debug.Log("Active State");
 
             // change the turret's colour via a micro coroutine
             _colourCoroutine = _behaviour.LerpTurretColour(Color.yellow).ToObservable().Subscribe();

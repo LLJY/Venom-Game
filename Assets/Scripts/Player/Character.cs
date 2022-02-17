@@ -1,10 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MobAI.Anxiety;
+using MobAI.Harm;
+using MobAI.NpcCommon;
+using MobAI.Suicide;
 using Patterns;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 // TODO move camera logic into separate cam script
 namespace Player
@@ -21,8 +26,10 @@ namespace Player
         [SerializeField] private GameObject swordSlash;
         [SerializeField] private GameObject swordSlash2;
         [SerializeField] private GameObject sword;
-        [SerializeField] private int health = 20;
+        [SerializeField] private int _baseHealth;
         [SerializeField] private Renderer _characterRenderer;
+        [SerializeField] private Image healthBar;
+        [SerializeField] private int baseDamage=10;
 
         // GetComponent assigned variables
         private CharacterController _characterController;
@@ -39,25 +46,44 @@ namespace Player
         private Color _baseColour;
         private Material _characterMaterial;
         private static readonly int BaseColor = Shader.PropertyToID("BaseColor");
+        private float _playerXp = 0;
+        private IDisposable _dieCoroutine;
+        [HideInInspector] public ReactiveProperty<int> health = new ReactiveProperty<int>(20);
+        private Collider[] _npcsToDamage = {};
+        private RaycastHit[] _npcsToDamageRaycastHits = {};
+        private int _npcLayerMask = 1 << 7;
+        private Vector3 _playerCenter;
+        private IDisposable _mediumAttackCoroutine;
+        private IDisposable _bigAttackCoroutine;
+
+
 
         // Start is called before the first frame update
         private void Awake()
         {
+            health.Value = _baseHealth;
             _characterController = GetComponent<CharacterController>();
             _animator = GetComponent<Animator>();
             _rb = GetComponent<Rigidbody>();
             _characterMaterial = _characterRenderer.material;
             _baseColour = _characterMaterial.color;
+            _playerCenter = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+            
+            health.Subscribe((x) =>
+            {
+                if (health.Value <= 0 && _dieCoroutine == null)
+                {
+                    _dieCoroutine = Death().ToObservable().Subscribe();
+                }
+
+                healthBar.fillAmount = (float)x / (float)_baseHealth;
+            });
         }
 
         void Update()
         {
             HandleCharacterMovement();
             HandleCharacterAttacks();
-            if (health <= 0)
-            {
-                MainThreadDispatcher.StartCoroutine(Death());
-            }
         }
 
         void HandleCharacterMovement()
@@ -103,14 +129,14 @@ namespace Player
 
         void HandleCharacterAttacks()
         {
-            if (Input.GetButton("Fire2"))
+            if (Input.GetButton("Fire2") && _bigAttackCoroutine == null)
             {
-                MainThreadDispatcher.StartCoroutine(BigAttack());
+                _bigAttackCoroutine = BigAttack().ToObservable().Subscribe();
             }
 
-            if (Input.GetButton("Fire1") && _holdingSword)
+            if (Input.GetButton("Fire1") && _holdingSword && _mediumAttackCoroutine == null)
             {
-                MainThreadDispatcher.StartCoroutine(MediumAttack());
+                _mediumAttackCoroutine = MediumAttack().ToObservable().Subscribe();
             }
 
             if (Input.GetKeyDown(KeyCode.F) && _characterController.velocity == Vector3.zero)
@@ -138,6 +164,8 @@ namespace Player
             laserBeam.SetActive(false);
             _pausePlayerInput = false;
             yield return new WaitForSeconds(bigAttackTimeout);
+            
+            _bigAttackCoroutine = null;
         }
 
         private IEnumerator MediumAttack()
@@ -148,24 +176,65 @@ namespace Player
              */
             _pausePlayerInput = true;
             _currentCharacterVelocity = new Vector3(0, 0, 0);
+            var damage = baseDamage * 1.5f;
+            
+            // first slash
             yield return new WaitForSeconds(0.2f);
             _mediumAttackTriggeredTime = Time.time;
             swordSlash.SetActive(true);
             _animator.SetTrigger("Sword Attack");
-            yield return new WaitForSeconds(1f);
+
+            yield return new WaitForSeconds(0.5f);
+            int maxColliders = 10;
+            Collider[] hitColliders = new Collider[maxColliders];
+            Physics.OverlapSphereNonAlloc(transform.position, 3f, hitColliders, _npcLayerMask);
+            foreach (var npc in hitColliders)
+            {
+                DamageNpc(npc, Mathf.FloorToInt(damage));
+            }
+            yield return new WaitForSeconds(0.5f);
+            
+            // second slash
             swordSlash.SetActive(false);
             swordSlash2.SetActive(true);
             _animator.ResetTrigger("Sword Attack");
             yield return new WaitForSeconds(1f);
+            Physics.OverlapSphereNonAlloc(_playerCenter, 3f, hitColliders, _npcLayerMask);
+            foreach (var npc in hitColliders)
+            {
+                DamageNpc(npc, Mathf.FloorToInt(damage));
+            }
             swordSlash2.SetActive(false);
             _pausePlayerInput = false;
             yield return new WaitForSeconds(mediumAttackTimeout);
+
+            _mediumAttackCoroutine = null;
+        }
+
+        private void DamageNpc(Collider npc, int damage)
+        {
+            if (npc == null) return;
+            if (npc.name.StartsWith("Harm", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var script = npc.GetComponent<HarmNpc>();
+                MainThreadDispatcher.StartCoroutine(script.DamageNpc(damage));
+            }
+            else if (npc.name.StartsWith("Anxiety", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var script = npc.GetComponent<AnxietyNpc>();
+                MainThreadDispatcher.StartCoroutine(script.DamageNpc(damage));
+            }
+            else if (npc.name.StartsWith("Suicide", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var script = npc.GetComponent<SuicideNpc>();
+                MainThreadDispatcher.StartCoroutine(script.DamageNpc(damage));
+            }
         }
 
         public IEnumerator DamagePlayer(int damage)
         {
             var time = 0.5f;
-            health -= damage;
+            health.Value -= damage;
             _characterMaterial.color = Color.red;
             // lerp back to the original colour
             var time1 = time / 10;
@@ -179,10 +248,16 @@ namespace Player
 
         public IEnumerator Death()
         {
+            Debug.Log("Death");
+            _pausePlayerInput = true;
             _animator.SetTrigger("Death");
             // TODO trigger user interface for death.
             yield return null;
         }
 
+        private void OnDestroy()
+        {
+            _dieCoroutine?.Dispose();
+        }
     }
 }

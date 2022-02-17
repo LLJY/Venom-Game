@@ -35,7 +35,6 @@ namespace Obstacles.TeslaCoil
             {
                 if (!_arcingToObject)
                 {
-                    Debug.Log("arcing...");
                     lightningVfx.SetFloat("ImpactOffset", _defaultImpactOffset);
                     _lightningVfxTransform.rotation = _lightningDefaultRotation;
                     yield return MakeArc();
@@ -69,7 +68,6 @@ namespace Obstacles.TeslaCoil
         private void OnTriggerEnter(Collider other)
         {
             if (_arcingToObject) return;
-            Debug.Log($"arcing to object... {other.name}");
             _arcToObjectCoroutine = ArcToObject(other.transform.position).ToObservable().Subscribe();
         }
 
