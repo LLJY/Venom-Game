@@ -49,7 +49,7 @@ namespace MobAI.Suicide
                 yield return new WaitForSeconds(1.6f);
                 _behaviour.rock.isKinematic = false;
                 _behaviour.rock.transform.SetParent(null, true);
-                var directionToPlayer = GameCache.playerStatic.transform.position - _behaviour.transform.position;
+                var directionToPlayer = GameCache.playerStatic.transform.position + new Vector3(0, 0.5f, 0) - _behaviour.transform.position;
                 _behaviour.rock.AddForce(directionToPlayer.normalized*_behaviour.rockSpeed, ForceMode.VelocityChange);
             }
             yield return new WaitForSeconds(2f);

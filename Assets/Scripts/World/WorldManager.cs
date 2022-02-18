@@ -41,15 +41,15 @@ namespace World
         public Material act2Material;
         public Material act3Material;
         public Vector2 obstacleMargin;
-        
+
         private void Awake()
         {
             GenerateWorld();
-            navMesh.BuildNavMesh();
         }
 
         private void Start()
         {
+            GenerateObstacles();
             // do this after everything has been done
             MovePlayerToStartPosition();
         }
@@ -65,7 +65,7 @@ namespace World
              */
             var cc = player.GetComponent<CharacterController>();
             cc.enabled = false;
-            var playerPos = new Vector3(topWall.position.x +10, 0, leftWall.position.z +10);
+            var playerPos = new Vector3(topWall.position.x + 5, 0, leftWall.position.z + 5);
             player.position = playerPos;
             cc.enabled = true;
         }
@@ -91,6 +91,7 @@ namespace World
                 wall.parent = null;
                 wall.localScale = new Vector3(2f, wall.localScale.y, wall.localScale.z);
             }
+
             AdjustWallsAfterScaling(topWall);
             AdjustWallsAfterScaling(bottomWall);
             AdjustWallsAfterScaling(leftWall);
@@ -104,7 +105,11 @@ namespace World
             };
             var textureScale = scale * 4f;
             groundRenderer.material.SetTextureScale("_BaseColorMap", textureScale);
+            navMesh.BuildNavMesh();
+        }
 
+        private void GenerateObstacles()
+        {
             var obstaclePos = GenerateObstaclePositions();
             foreach (var pos in obstaclePos)
             {
@@ -112,6 +117,7 @@ namespace World
                 {
                     case WorldType.Act1:
                         turretGroup.Instantiate(pos);
+                        GameCache.bulletObjectPool.enabled = true;
                         break;
                     case WorldType.Act2:
                         pressurePlateGroup.Instantiate(pos);
@@ -136,6 +142,8 @@ namespace World
             var randomChance = Random.Range(0, 1);
             var obstacleDensity = Mathf.Min(Mathf.Pow(1.5f * randomChance, 7) + 30, 1) / 100;
             var worldSize = ground.GetComponent<Renderer>().bounds.size;
+            worldSize.x -= obstacleMargin.x;
+            worldSize.y -= obstacleMargin.y;
             var worldArea = worldSize.x * worldSize.z * (Mathf.PI / (2 * Mathf.Pow(1f, 1f / 3f)));
             var obstacleArea = Mathf.PI * obstacleRadius * obstacleRadius;
             var numberOfObstaclesFit = worldArea / obstacleArea;
@@ -163,7 +171,7 @@ namespace World
 
             return obstaclePos;
         }
-        
+
         /// <summary>
         /// Resets the game scene and restarts it with the previous seed
         /// </summary>
@@ -172,6 +180,7 @@ namespace World
             RandomSeedProvider.PreviousSeed();
             SceneManager.LoadScene("StupidGameScene");
         }
+
         /// <summary>
         /// Resets the game scene and restarts it with the next seed
         /// </summary>

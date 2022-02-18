@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UniRx;
 using UnityEngine;
 
@@ -14,13 +16,22 @@ namespace Obstacles.PressurePlate
         [SerializeField] private float plateOffsetUp;
         [SerializeField] private float plateOffsetDown;
         [SerializeField] private float lerpTime=2;
-    
+        [SerializeField] private int damagePerSecond = 5;
+
         // runtime assigned variables
         private List<int> objectsInTrigger = new List<int>();
-        private Coroutine _coroutine;
+        private IDisposable _spikePositionCoroutine;
+        private IDisposable _damagePlayerCoroutine;
+        private Vector3 _transformPos;
+        private int _damageableLayerMask = 1 << 7;
 
         private bool isRaised = false;
         // Start is called before the first frame update
+        public override void Awake()
+        {
+            base.Awake();
+            _transformPos = transform.position;
+        }
 
         // Update is called once per frame
         public override void Update()
@@ -28,15 +39,29 @@ namespace Obstacles.PressurePlate
             if (objectsInTrigger.Count > 0 && !isRaised)
             {
                 isRaised = true;
-                if (_coroutine != null) return;
-                _coroutine = MainThreadDispatcher.StartCoroutine(SetSpikePosition(plateOffsetDown, spikeOffsetUp));
+                if (_spikePositionCoroutine != null) return;
+                _spikePositionCoroutine = SetSpikePosition(plateOffsetDown, spikeOffsetUp).ToObservable().Subscribe();
+                _damagePlayerCoroutine = DamagePlayer().ToObservable().Subscribe();
             }
             else if (objectsInTrigger.Count == 0 && isRaised)
             {
                 isRaised = false;
-                if (_coroutine != null) return;
-                _coroutine = MainThreadDispatcher.StartCoroutine(SetSpikePosition(plateOffsetUp, spikeOffsetDown));
+                if (_spikePositionCoroutine != null) return;
+                _spikePositionCoroutine = SetSpikePosition(plateOffsetUp, spikeOffsetDown).ToObservable().Subscribe();
             }
+        }
+
+        private IEnumerator DamagePlayer()
+        {
+            Collider[] hitColliders = new Collider[4];
+            Physics.OverlapSphereNonAlloc(_transformPos, 0.5f, hitColliders, _damageableLayerMask);
+            while (objectsInTrigger.Any(x => x != GameCache.playerStatic.GetInstanceID()))
+            {
+                MainThreadDispatcher.StartCoroutine(GameCache.playerScript.DamagePlayer(damagePerSecond));
+                yield return new WaitForSeconds(1f);
+            }
+            _damagePlayerCoroutine?.Dispose();
+            _damagePlayerCoroutine = null;
         }
 
         private IEnumerator SetSpikePosition(float platePosition, float spikePosition)
@@ -53,7 +78,8 @@ namespace Obstacles.PressurePlate
                 spikes.transform.localPosition = Vector3.Lerp(spikeStartPos, spikeEndPos, lerp);
                 yield return new WaitForSeconds(lerpTime/lerpSteps);
             }
-            _coroutine = null;
+            _spikePositionCoroutine?.Dispose();
+            _spikePositionCoroutine = null;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -64,6 +90,12 @@ namespace Obstacles.PressurePlate
         private void OnTriggerExit(Collider other)
         {
             objectsInTrigger.Remove(other.gameObject.GetInstanceID());
+        }
+
+        public override void OnDestroy()
+        {
+            _damagePlayerCoroutine?.Dispose();
+            _spikePositionCoroutine?.Dispose();
         }
     }
 }

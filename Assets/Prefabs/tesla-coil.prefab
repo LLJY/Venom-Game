@@ -1994,8 +1994,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091fbe4f160141e984157438fcd4878c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableStatefulMb: 1
   lightningVfx: {fileID: 266480205448963481}
   light: {fileID: 266480205448963486}
+  damage: 0
 --- !u!1 &266480205847184872
 GameObject:
   m_ObjectHideFlags: 0

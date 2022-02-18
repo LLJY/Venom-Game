@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.MemoryMappedFiles;
+using Player;
 using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
@@ -32,14 +33,16 @@ namespace MobAI.Suicide
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.name.StartsWith("Suicide", StringComparison.InvariantCultureIgnoreCase)) return;
-            MainThreadDispatcher.StartCoroutine(ResetRock());
-            Physics.OverlapSphereNonAlloc(transform.position, explosionRadius, _overlapResults, _damageableLayerMask);
-            foreach (var overlap in _overlapResults)
+            int maxColliders = 10;
+            Collider[] hitColliders = new Collider[maxColliders];
+            Physics.OverlapSphereNonAlloc(transform.position, explosionRadius, hitColliders, _damageableLayerMask);
+            foreach (var overlap in hitColliders)
             {
+                if (overlap == null) continue;
                 var rb = overlap.GetComponent<Rigidbody>();
                 if (rb == null) return;
                 if (overlap.tag.Equals("Player", StringComparison.InvariantCultureIgnoreCase))
-                { 
+                {
                     var cc = overlap.GetComponent<CharacterController>();
                     MainThreadDispatcher.StartCoroutine(Knockback(overlap.transform.position, rb, cc));
                 }
@@ -47,16 +50,19 @@ namespace MobAI.Suicide
                 {
                     var navmesh = overlap.GetComponent<NavMeshAgent>();
                     MainThreadDispatcher.StartCoroutine(Knockback(overlap.transform.position, rb, navmesh));
-                } 
+                }
             }
-            
+            MainThreadDispatcher.StartCoroutine(ResetRock());
+
         }
         
         public IEnumerator Knockback(Vector3 point, Rigidbody rb, CharacterController controller)
         {
-            if (rb.isKinematic) yield break;
+            if (!rb.isKinematic) yield break;
+            rb.isKinematic = false;
             controller.enabled = false;
             rb.AddExplosionForce(explosionForce, point, explosionRadius);
+            MainThreadDispatcher.StartCoroutine(GameCache.playerScript.DamagePlayer(baseDamage));
             while (rb.velocity != Vector3.zero)
             {
                 yield return new WaitForSeconds(1);
@@ -67,7 +73,8 @@ namespace MobAI.Suicide
         
         public IEnumerator Knockback(Vector3 point, Rigidbody rb, NavMeshAgent controller)
         {
-            if (rb.isKinematic) yield break;
+            if (!rb.isKinematic) yield break;
+            rb.isKinematic = false;
             controller.enabled = false;
             rb.AddExplosionForce(explosionForce, point, explosionRadius);
             while (rb.velocity != Vector3.zero)

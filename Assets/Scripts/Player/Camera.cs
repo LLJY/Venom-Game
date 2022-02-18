@@ -51,14 +51,13 @@ namespace Player
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 10, _wallLayerMask))
             {
-                if (oldHit.transform == null || hit.transform.gameObject.GetInstanceID() != oldHit.transform.gameObject.GetInstanceID())
-                {
-                    Debug.Log("hit!");
-                    var hitMaterial = hit.collider.gameObject.GetComponent<MeshRenderer>().material;
-                    oldHit = hit;
-                    oldHitColor = hitMaterial.color;
-                    hitMaterial.color = new Color(oldHitColor.r, oldHitColor.g, oldHitColor.b, 0.2f);
-                }
+                if (oldHit.transform != null && hit.transform.gameObject.GetInstanceID() ==
+                    oldHit.transform.gameObject.GetInstanceID()) return;
+                Debug.Log("hit!");
+                var hitMaterial = hit.collider.gameObject.GetComponent<MeshRenderer>().material;
+                oldHit = hit;
+                oldHitColor = hitMaterial.color;
+                hitMaterial.color = new Color(oldHitColor.r, oldHitColor.g, oldHitColor.b, 0.2f);
             }
             else
             {

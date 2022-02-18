@@ -1,5 +1,8 @@
 using System;
 using System.Collections;
+using MobAI.Anxiety;
+using MobAI.Harm;
+using MobAI.Suicide;
 using UniRx;
 using UnityEngine;
 using UnityEngine.AI;

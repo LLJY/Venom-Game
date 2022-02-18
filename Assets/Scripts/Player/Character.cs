@@ -159,7 +159,10 @@ namespace Player
             _animator.SetTrigger("Laser Attack");
             yield return new WaitForSeconds(0.9f);
             laserBeam.SetActive(true);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
+            
+            int maxColliders = 10;
+            Collider[] hitColliders = new Collider[maxColliders];
             _animator.ResetTrigger("Laser Attack");
             laserBeam.SetActive(false);
             _pausePlayerInput = false;
@@ -185,12 +188,11 @@ namespace Player
             _animator.SetTrigger("Sword Attack");
 
             yield return new WaitForSeconds(0.5f);
-            int maxColliders = 10;
-            Collider[] hitColliders = new Collider[maxColliders];
+            Collider[] hitColliders = new Collider[10];
             Physics.OverlapSphereNonAlloc(transform.position, 3f, hitColliders, _npcLayerMask);
             foreach (var npc in hitColliders)
             {
-                DamageNpc(npc, Mathf.FloorToInt(damage));
+                NpcCommon.DamageNpc(npc.gameObject, Mathf.FloorToInt(damage));
             }
             yield return new WaitForSeconds(0.5f);
             
@@ -202,33 +204,13 @@ namespace Player
             Physics.OverlapSphereNonAlloc(_playerCenter, 3f, hitColliders, _npcLayerMask);
             foreach (var npc in hitColliders)
             {
-                DamageNpc(npc, Mathf.FloorToInt(damage));
+                NpcCommon.DamageNpc(npc.gameObject, Mathf.FloorToInt(damage));
             }
             swordSlash2.SetActive(false);
             _pausePlayerInput = false;
             yield return new WaitForSeconds(mediumAttackTimeout);
 
             _mediumAttackCoroutine = null;
-        }
-
-        private void DamageNpc(Collider npc, int damage)
-        {
-            if (npc == null) return;
-            if (npc.name.StartsWith("Harm", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var script = npc.GetComponent<HarmNpc>();
-                MainThreadDispatcher.StartCoroutine(script.DamageNpc(damage));
-            }
-            else if (npc.name.StartsWith("Anxiety", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var script = npc.GetComponent<AnxietyNpc>();
-                MainThreadDispatcher.StartCoroutine(script.DamageNpc(damage));
-            }
-            else if (npc.name.StartsWith("Suicide", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var script = npc.GetComponent<SuicideNpc>();
-                MainThreadDispatcher.StartCoroutine(script.DamageNpc(damage));
-            }
         }
 
         public IEnumerator DamagePlayer(int damage)
