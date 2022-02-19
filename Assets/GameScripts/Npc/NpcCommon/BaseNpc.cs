@@ -8,6 +8,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using Camera = Player.Camera;
 using Random = UnityEngine.Random;
 
 namespace MobAI.NpcCommon
@@ -25,6 +26,8 @@ namespace MobAI.NpcCommon
         public Transform cameraTransform;
         public Transform canvasTransform;
         public Renderer npcRenderer;
+        public GameObject dopaDrop;
+        public GameObject healthDrop;
 
         // cached variables for performance
         public Transform playerTransform;
@@ -66,6 +69,8 @@ namespace MobAI.NpcCommon
                 }
                 healthBar.fillAmount = (Mathf.Max(x, 0) / baseHealth);
             });
+            cameraTransform = GameCache.CameraScript.transform;
+            
         }
 
         private void RandomizeHealth()
@@ -86,7 +91,13 @@ namespace MobAI.NpcCommon
             animator.SetTrigger("Death");
             yield return new WaitForSeconds(4f);
             GameCache.GameData.DemonsKilled++;
-            GameCache.GameData.PlayerXpReactiveProperty.Value += 10;
+                                
+            // drop xp and health (50% chance of dropping health
+            Instantiate(dopaDrop, transform.position, Quaternion.identity);
+            if (Random.Range(0f, 1f) < 0.5f)
+            {
+                Instantiate(healthDrop, transform.position, Quaternion.identity);
+            }
             Destroy(gameObject);
         }
 

@@ -270,6 +270,8 @@ MonoBehaviour:
   cameraTransform: {fileID: 0}
   canvasTransform: {fileID: 642156754981749587}
   npcRenderer: {fileID: 6419640794453651702}
+  dopaDrop: {fileID: 7574265529776997078, guid: d5bbd92da62fb28cb9ede6141f09cebe, type: 3}
+  healthDrop: {fileID: 1937546398641071778, guid: 84e63757682b40cb0a04dc16deca8936, type: 3}
   playerTransform: {fileID: 0}
   agent: {fileID: 0}
   baseBuffRadius: 5

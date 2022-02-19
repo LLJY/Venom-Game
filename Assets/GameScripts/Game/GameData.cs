@@ -12,7 +12,7 @@ namespace Game
     public class GameData
     {
         public float PlayerCurrentHealth = 100;
-        private float PlayerXP = 1;
+        private float PlayerXP = 0;
         [NonSerialized] public ReactiveProperty<float> PlayerXpReactiveProperty;
         public int DemonsKilled = 0;
         public int CurrentWorldIndex = 0;
@@ -21,15 +21,23 @@ namespace Game
         public bool FirstTimeSeeingAnxiety = true;
         public bool FirstTimePlaying = true;
         public int SaveSlot = 0;
+        public bool FreshRespawn = true;
         public string SaveName = "default";
 
         public GameData()
         {
             CurrentWorldIndex = Random.Range(int.MinValue, int.MaxValue);
             PlayerXpReactiveProperty = new ReactiveProperty<float>(PlayerXP);
+            PlayerXpReactiveProperty.Subscribe(x =>
+            {
+                PlayerXP = x;
+            });
         }
 
-        public int PlayerLevel => Mathf.FloorToInt(Mathf.Sqrt(PlayerXP));
+        public float PlayerLevelRaw => Mathf.Sqrt(PlayerXP);
+
+        public int PlayerLevel => Mathf.FloorToInt(PlayerLevelRaw);
+        public float PlayerLevelProgress => Mathf.Ceil(PlayerLevelRaw) - PlayerLevelRaw; 
 
         public static void SaveGame()
         {

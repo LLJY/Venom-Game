@@ -28,6 +28,8 @@ namespace Player
         [SerializeField] private int baseHealth;
         [SerializeField] private Renderer characterRenderer;
         [SerializeField] private Image healthBar;
+        [SerializeField] private Image xpBar;
+        [SerializeField] private Text xpBarText;
         [SerializeField] private int baseDamage = 10;
         [SerializeField] private Image mediumAttackImage;
         [SerializeField] private Text mediumAttackCountdownText;
@@ -68,10 +70,11 @@ namespace Player
 
         private void Start()
         {
+            Debug.Log("playerlevel" + GameCache.GameData.PlayerLevelRaw);
             baseHealth *= Mathf.FloorToInt(1 + GameCache.GameData.PlayerLevel / 25);
             baseDamage *= Mathf.FloorToInt(1 + GameCache.GameData.PlayerLevel / 30);
-            health.Value = GameCache.GameData.PlayerCurrentHealth;
             
+
             health.Subscribe((x) =>
             {
                 if (health.Value <= 0 && _dieCoroutine == null)
@@ -81,6 +84,24 @@ namespace Player
 
                 GameCache.GameData.PlayerCurrentHealth = x;
                 healthBar.fillAmount = (float) x / (float) baseHealth;
+            });
+            
+            // give the player full health on respawn
+            if (GameCache.GameData.FirstTimePlaying || GameCache.GameData.FreshRespawn)
+            {
+                GameCache.GameData.FreshRespawn = false;
+                health.Value = baseHealth;
+            }
+            else
+            {
+                health.Value = GameCache.GameData.PlayerCurrentHealth;
+            }
+            
+            // update the xp bar
+            GameCache.GameData.PlayerXpReactiveProperty.Subscribe(x =>
+            {
+                xpBar.fillAmount = GameCache.GameData.PlayerLevelProgress;
+                xpBarText.text = GameCache.GameData.PlayerLevel.ToString();
             });
         }
 
