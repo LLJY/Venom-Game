@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
+using UniRx;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,7 +12,8 @@ namespace Game
     public class GameData
     {
         public float PlayerCurrentHealth = 100;
-        public float PlayerXP = 1;
+        private float PlayerXP = 1;
+        [NonSerialized] public ReactiveProperty<float> PlayerXpReactiveProperty;
         public int DemonsKilled = 0;
         public int CurrentWorldIndex = 0;
         public bool FirstTimeSeeingSuicide = true;
@@ -24,6 +26,7 @@ namespace Game
         public GameData()
         {
             CurrentWorldIndex = Random.Range(int.MinValue, int.MaxValue);
+            PlayerXpReactiveProperty = new ReactiveProperty<float>(PlayerXP);
         }
 
         public int PlayerLevel => Mathf.FloorToInt(Mathf.Sqrt(PlayerXP));

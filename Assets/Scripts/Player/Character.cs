@@ -47,7 +47,6 @@ namespace Player
         private Color _baseColour;
         private Material _characterMaterial;
         private static readonly int BaseColor = Shader.PropertyToID("BaseColor");
-        private float _playerXp = 0;
         private IDisposable _dieCoroutine;
         [HideInInspector] public ReactiveProperty<float> health = new ReactiveProperty<float>(20);
         private int _npcLayerMask = 1 << 7;
@@ -70,6 +69,7 @@ namespace Player
         private void Start()
         {
             baseHealth *= Mathf.FloorToInt(1 + GameCache.GameData.PlayerLevel / 25);
+            baseDamage *= Mathf.FloorToInt(1 + GameCache.GameData.PlayerLevel / 30);
             health.Value = GameCache.GameData.PlayerCurrentHealth;
             
             health.Subscribe((x) =>

@@ -86,7 +86,7 @@ namespace MobAI.NpcCommon
             animator.SetTrigger("Death");
             yield return new WaitForSeconds(4f);
             GameCache.GameData.DemonsKilled++;
-            GameCache.GameData.PlayerXP += 10;
+            GameCache.GameData.PlayerXpReactiveProperty.Value += 10;
             Destroy(gameObject);
         }
 
