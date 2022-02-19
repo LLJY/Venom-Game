@@ -5,6 +5,10 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+/out/*
+/[Aa]ssets/ERP/*
+/[Aa]ssets/ERP.meta
+.erp
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -72,4 +76,3 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
-/[Aa]ssets/ERP/*
