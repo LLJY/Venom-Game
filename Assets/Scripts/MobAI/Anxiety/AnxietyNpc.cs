@@ -39,7 +39,6 @@ namespace MobAI.Anxiety
             CurrentState?.Update();
 
             #region AnyState Transitions
-
             if (Vector3.Distance(transform.position, playerTransform.position) < avoidRadius)
             {
                 if (CurrentState != _avoidState)

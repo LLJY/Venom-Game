@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Game;
 using Obstacles.PressurePlate;
 using Obstacles.TeslaCoil;
 using Obstacles.Turret;
@@ -44,6 +45,9 @@ namespace World
 
         private void Awake()
         {
+            // create new game data if we haven't assigned any
+            GameCache.GameData ??= new GameData();
+
             GenerateWorld();
         }
 

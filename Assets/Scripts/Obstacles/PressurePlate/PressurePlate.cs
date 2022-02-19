@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MobAI.NpcCommon;
 using UniRx;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ namespace Obstacles.PressurePlate
         [SerializeField] private int damagePerSecond = 5;
 
         // runtime assigned variables
-        private List<int> objectsInTrigger = new List<int>();
+        private List<GameObject> objectsInTrigger = new List<GameObject>();
         private IDisposable _spikePositionCoroutine;
         private IDisposable _damagePlayerCoroutine;
         private Vector3 _transformPos;
@@ -55,8 +56,13 @@ namespace Obstacles.PressurePlate
         {
             Collider[] hitColliders = new Collider[4];
             Physics.OverlapSphereNonAlloc(_transformPos, 0.5f, hitColliders, _damageableLayerMask);
-            while (objectsInTrigger.Any(x => x != GameCache.playerStatic.GetInstanceID()))
+            while (objectsInTrigger.Count > 0)
             {
+                objectsInTrigger.RemoveAll(x => Vector3.Distance(x.transform.position, transform.position) > 2f);
+                foreach (var obj in objectsInTrigger)
+                {
+                    NpcCommon.DamageAnything(obj, damagePerSecond);
+                }
                 MainThreadDispatcher.StartCoroutine(GameCache.playerScript.DamagePlayer(damagePerSecond));
                 yield return new WaitForSeconds(1f);
             }
@@ -84,12 +90,12 @@ namespace Obstacles.PressurePlate
 
         private void OnTriggerEnter(Collider other)
         {
-            objectsInTrigger.Add(other.gameObject.GetInstanceID());
+            objectsInTrigger.Add(other.gameObject);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            objectsInTrigger.Remove(other.gameObject.GetInstanceID());
+            objectsInTrigger.RemoveAll(x=>x.GetInstanceID() == other.gameObject.GetInstanceID());
         }
 
         public override void OnDestroy()

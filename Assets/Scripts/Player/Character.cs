@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Game;
 using MobAI.Anxiety;
 using MobAI.Harm;
 using MobAI.NpcCommon;
@@ -19,9 +20,9 @@ namespace Player
         // Inspector assigned variables
         [SerializeField] private float playerSprintSpeed = 5;
         [SerializeField] private float characterJumpHeight = 2;
-        [SerializeField] private float smallAttackTimeout = 5;
-        [SerializeField] private float mediumAttackTimeout = 10;
-        [SerializeField] private float bigAttackTimeout = 15;
+        [SerializeField] private int smallAttackTimeout = 5;
+        [SerializeField] private int mediumAttackTimeout = 10;
+        [SerializeField] private int bigAttackTimeout = 15;
         [SerializeField] private GameObject laserBeam;
         [SerializeField] private GameObject swordSlash;
         [SerializeField] private GameObject swordSlash2;
@@ -30,6 +31,11 @@ namespace Player
         [SerializeField] private Renderer _characterRenderer;
         [SerializeField] private Image healthBar;
         [SerializeField] private int baseDamage=10;
+        [SerializeField] private Image mediumAttackImage;
+        [SerializeField] private Text mediumAttackCountdownText;
+        [SerializeField] private Image bigAttackImage;
+        [SerializeField] private Text bigAttackCountdownText;
+
 
         // GetComponent assigned variables
         private CharacterController _characterController;
@@ -39,9 +45,7 @@ namespace Player
 
         // runtime assigned variables
         private float _smallAttackTriggeredTime = 0;
-        private float _mediumAttackTriggeredTime = 0;
         private bool _holdingSword = false;
-        private float _bigAttackTriggeredTime = 0;
         private bool _pausePlayerInput = false;
         private Color _baseColour;
         private Material _characterMaterial;
@@ -49,8 +53,6 @@ namespace Player
         private float _playerXp = 0;
         private IDisposable _dieCoroutine;
         [HideInInspector] public ReactiveProperty<int> health = new ReactiveProperty<int>(20);
-        private Collider[] _npcsToDamage = {};
-        private RaycastHit[] _npcsToDamageRaycastHits = {};
         private int _npcLayerMask = 1 << 7;
         private Vector3 _playerCenter;
         private IDisposable _mediumAttackCoroutine;
@@ -61,7 +63,6 @@ namespace Player
         // Start is called before the first frame update
         private void Awake()
         {
-            health.Value = _baseHealth;
             _characterController = GetComponent<CharacterController>();
             _animator = GetComponent<Animator>();
             _rb = GetComponent<Rigidbody>();
@@ -78,6 +79,11 @@ namespace Player
 
                 healthBar.fillAmount = (float)x / (float)_baseHealth;
             });
+        }
+
+        private void Start()
+        {
+            health.Value = _baseHealth * Mathf.FloorToInt(1+ GameCache.GameData.PlayerXp/100);
         }
 
         void Update()
@@ -155,17 +161,22 @@ namespace Player
              */
             _pausePlayerInput = true;
             _currentCharacterVelocity = new Vector3(0, 0, 0);
-            _bigAttackTriggeredTime = Time.time;
             _animator.SetTrigger("Laser Attack");
             yield return new WaitForSeconds(0.9f);
             laserBeam.SetActive(true);
             yield return new WaitForSeconds(0.5f);
             
-            int maxColliders = 10;
-            Collider[] hitColliders = new Collider[maxColliders];
+            var hitColliders = new RaycastHit[10];
+            Physics.RaycastNonAlloc(new Ray(transform.position, transform.forward), hitColliders, 10f, _npcLayerMask);
+            foreach (var ray in hitColliders)
+            {
+                if (ray.collider == null) continue;
+                NpcCommon.DamageNpc(ray.collider.gameObject, baseDamage * 3);
+            }
             _animator.ResetTrigger("Laser Attack");
             laserBeam.SetActive(false);
             _pausePlayerInput = false;
+            MainThreadDispatcher.StartCoroutine(SetAttackUserInterfaceTimeout(bigAttackImage, bigAttackCountdownText, bigAttackTimeout));
             yield return new WaitForSeconds(bigAttackTimeout);
             
             _bigAttackCoroutine = null;
@@ -180,10 +191,8 @@ namespace Player
             _pausePlayerInput = true;
             _currentCharacterVelocity = new Vector3(0, 0, 0);
             var damage = baseDamage * 1.5f;
-            
             // first slash
             yield return new WaitForSeconds(0.2f);
-            _mediumAttackTriggeredTime = Time.time;
             swordSlash.SetActive(true);
             _animator.SetTrigger("Sword Attack");
 
@@ -192,6 +201,7 @@ namespace Player
             Physics.OverlapSphereNonAlloc(transform.position, 3f, hitColliders, _npcLayerMask);
             foreach (var npc in hitColliders)
             {
+                if (npc == null) continue;
                 NpcCommon.DamageNpc(npc.gameObject, Mathf.FloorToInt(damage));
             }
             yield return new WaitForSeconds(0.5f);
@@ -204,10 +214,12 @@ namespace Player
             Physics.OverlapSphereNonAlloc(_playerCenter, 3f, hitColliders, _npcLayerMask);
             foreach (var npc in hitColliders)
             {
+                if (npc == null) continue;
                 NpcCommon.DamageNpc(npc.gameObject, Mathf.FloorToInt(damage));
             }
             swordSlash2.SetActive(false);
             _pausePlayerInput = false;
+            MainThreadDispatcher.StartCoroutine(SetAttackUserInterfaceTimeout(mediumAttackImage, mediumAttackCountdownText, mediumAttackTimeout));
             yield return new WaitForSeconds(mediumAttackTimeout);
 
             _mediumAttackCoroutine = null;
@@ -225,7 +237,6 @@ namespace Player
                 _characterMaterial.color = Color.Lerp(Color.red, _baseColour, (float) i / 10f);
                 yield return new WaitForSeconds(time1);
             }
-            
         }
 
         public IEnumerator Death()
@@ -235,6 +246,22 @@ namespace Player
             _animator.SetTrigger("Death");
             // TODO trigger user interface for death.
             yield return null;
+        }
+
+        private IEnumerator SetAttackUserInterfaceTimeout(Image image, Text countdownText, int countdownTime)
+        {
+            var startColor = image.color;
+            image.color = new Color(startColor.r, startColor.g, startColor.b, 0.2f);
+            countdownText.enabled = true;
+            for (int i = 0; i < countdownTime; i++)
+            {
+                countdownText.text = (countdownTime - i).ToString();
+                yield return new WaitForSeconds(1f);
+            }
+
+            image.color = startColor;
+            countdownText.enabled = false;
+
         }
 
         private void OnDestroy()

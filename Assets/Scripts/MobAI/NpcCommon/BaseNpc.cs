@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Game;
 using MobAI.Anxiety;
 using MobAI.Harm;
 using MobAI.Suicide;
@@ -14,6 +15,7 @@ namespace MobAI.NpcCommon
     public abstract class BaseNpc<T>: StatefulMonoBehaviour<T>
     where T: StatefulMonoBehaviour<T>
     {
+        // inspector assigned variables
         public float baseSpeed = 2;
         public float baseHealth = 20;
         public Animator animator;
@@ -56,6 +58,9 @@ namespace MobAI.NpcCommon
                 Debug.Log($"npc health {x}");
                 if (x <= 0 && _deathCoroutine == null)
                 {
+                    enableStatefulMb = false;
+                    agent.velocity = Vector3.zero;
+                    agent.enabled = false;
                     _deathCoroutine = Death().ToObservable().Subscribe();
                 }
                 healthBar.fillAmount = (Mathf.Max(x, 0) / baseHealth);
@@ -74,11 +79,13 @@ namespace MobAI.NpcCommon
             animator.SetBool("Walking", walkSpeed > 0);
             animator.SetFloat("Walking Speed", walkSpeed);
         }
-        
-        private IEnumerator Death()
+
+        public IEnumerator Death()
         {
             animator.SetTrigger("Death");
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(4f);
+            GameCache.GameData.DemonsKilled++;
+            GameCache.GameData.PlayerXp += 10;
             Destroy(gameObject);
         }
 

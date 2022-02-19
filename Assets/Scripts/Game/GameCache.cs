@@ -1,4 +1,5 @@
 using System;
+using Game;
 using Obstacles.Turret;
 using Player;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class GameCache: MonoBehaviour
     public GameObject Player;
     public GameObject worldManager;
     public GameObject bulletManager;
+
+    public static GameData GameData;
 
     public static GameObject _worldManagerStatic;
     private static WorldManager worldManagerScriptStatic;
