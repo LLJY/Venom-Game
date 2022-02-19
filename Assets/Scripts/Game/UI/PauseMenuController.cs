@@ -21,7 +21,7 @@ namespace Game.UI
         private void Awake()
         {
             resumeButton.onClick.AddListener(Resume);
-            saveGameButton.onClick.AddListener(SaveGame);
+            saveGameButton.onClick.AddListener(GameData.SaveGame);
             mainMenuButton.onClick.AddListener(MainMenu);
             quitGameButton.onClick.AddListener(QuitToDesktop);
             pauseGameButton.onClick.AddListener(Pause);
@@ -54,7 +54,7 @@ namespace Game.UI
         public void MainMenu()
         {
             Time.timeScale = 1;
-            // SceneManager.LoadScene();
+            SceneManager.LoadScene("MainMenu");
         }
 
         public void QuitToDesktop()
@@ -62,14 +62,5 @@ namespace Game.UI
             Application.Quit();
         }
 
-        public static void SaveGame()
-        {
-            var gameData = GameCache.GameData;
-            var path = $"{Application.persistentDataPath}/save-{gameData.SaveSlot}.dat";
-            Debug.Log($"Save file saved to {path}");
-            using var stream = new FileStream(path, FileMode.OpenOrCreate);
-            var formatter = new BinaryFormatter();
-            formatter.Serialize(stream, gameData);
-        }
     }
 }

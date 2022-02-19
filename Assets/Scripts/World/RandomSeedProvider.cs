@@ -7,13 +7,14 @@ namespace World
     public static class RandomSeedProvider
     {
         public static int CurrentSeed;
-        private static int _currentWorldIndex = 0;
+        public static int CurrentWorldIndex = 0;
         public static int NextSeed()
         {
             // allow for overflows
             unchecked
             {
-                ++_currentWorldIndex;
+                ++CurrentWorldIndex;
+                GameCache.GameData.CurrentWorldIndex = CurrentWorldIndex;
                 return GenerateSeed();
 
             }
@@ -23,16 +24,17 @@ namespace World
             // allow for overflows
             unchecked
             {
-                --_currentWorldIndex;
+                --CurrentWorldIndex;
+                GameCache.GameData.CurrentWorldIndex = CurrentWorldIndex;
                 return GenerateSeed();
             }
         }
         private static int GenerateSeed()
         {
-            Debug.Log($"random {_currentWorldIndex}");
+            Debug.Log($"random {CurrentWorldIndex}");
             unchecked
             {
-                CurrentSeed = Random.Range(int.MinValue, int.MaxValue) * (_currentWorldIndex * 256);
+                CurrentSeed = Random.Range(int.MinValue, int.MaxValue) * (CurrentWorldIndex * 256);
                 Random.InitState(CurrentSeed);
                 return CurrentSeed;
             }

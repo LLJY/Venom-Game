@@ -34,15 +34,15 @@ namespace Obstacles.PressurePlate
             _transformPos = transform.position;
         }
 
-        // Update is called once per frame
-        public override void Update()
+        public override void FixedUpdate()
         {
+            base.FixedUpdate();
             if (objectsInTrigger.Count > 0 && !isRaised)
             {
                 isRaised = true;
                 if (_spikePositionCoroutine != null) return;
                 _spikePositionCoroutine = SetSpikePosition(plateOffsetDown, spikeOffsetUp).ToObservable().Subscribe();
-                _damagePlayerCoroutine = DamagePlayer().ToObservable().Subscribe();
+                _damagePlayerCoroutine = DamageObjects().ToObservable().Subscribe();
             }
             else if (objectsInTrigger.Count == 0 && isRaised)
             {
@@ -52,16 +52,17 @@ namespace Obstacles.PressurePlate
             }
         }
 
-        private IEnumerator DamagePlayer()
+        private IEnumerator DamageObjects()
         {
             Collider[] hitColliders = new Collider[4];
-            Physics.OverlapSphereNonAlloc(_transformPos, 0.5f, hitColliders, _damageableLayerMask);
+            Physics.OverlapSphereNonAlloc(_transformPos, 1f, hitColliders, _damageableLayerMask);
             while (objectsInTrigger.Count > 0)
             {
                 objectsInTrigger.RemoveAll(x => Vector3.Distance(x.transform.position, transform.position) > 2f);
-                foreach (var obj in objectsInTrigger)
+                foreach (var obj in hitColliders)
                 {
-                    NpcCommon.DamageAnything(obj, damagePerSecond);
+                    if (obj == null) continue;
+                    NpcCommon.DamageAnything(obj.gameObject, damagePerSecond);
                 }
                 MainThreadDispatcher.StartCoroutine(GameCache.playerScript.DamagePlayer(damagePerSecond));
                 yield return new WaitForSeconds(1f);
@@ -76,7 +77,7 @@ namespace Obstacles.PressurePlate
             var plateEndPos = new Vector3(plateStartPos.x, platePosition, plateStartPos.z);
             var spikeStartPos = spikes.transform.localPosition;
             var spikeEndPos = new Vector3(spikeStartPos.x, spikePosition, spikeStartPos.z);
-            var lerpSteps = 100f;
+            const float lerpSteps = 100f;
             for (int i = 0; i < lerpSteps; i++)
             {
                 var lerp = i / lerpSteps;

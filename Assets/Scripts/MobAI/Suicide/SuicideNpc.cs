@@ -1,6 +1,7 @@
 using System.Collections;
 using MobAI.Harm;
 using MobAI.NpcCommon;
+using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,10 +17,12 @@ namespace MobAI.Suicide
         public Rigidbody rock;
         public Transform rockParentTransform;
 
-        
         // NPC states
         private NpcWander<SuicideNpc> _wanderState;
         private SuicideAttackState _attackState;
+        
+        //runtime assigned variables
+        private bool _disableStateTransitions = false;
 
         // TODO randomize all values
         public override void Awake()
@@ -37,6 +40,12 @@ namespace MobAI.Suicide
         {
             base.Start();
             CurrentState = _wanderState;
+            currentHealth.Subscribe((x) =>
+            {
+                // do not attack, go back to wander
+                // the base Npc script will disable any movement
+                CurrentState = _wanderState;
+            });
         }
         
         public override void Update() {
@@ -44,7 +53,7 @@ namespace MobAI.Suicide
             CurrentState.Update();
 
             // ANYSTATE transitions
-
+            if (_disableStateTransitions) return;
             if (Vector3.Distance(transform.position, playerTransform.position) < senseRadius)
             {
                 if (CurrentState != _attackState)
@@ -56,6 +65,7 @@ namespace MobAI.Suicide
             {
                 CurrentState = _wanderState;
             }
+            
         }
 
 

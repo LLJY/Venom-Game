@@ -12,7 +12,6 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-// TODO move camera logic into separate cam script
 namespace Player
 {
     public class Character : MonoBehaviour
@@ -20,17 +19,16 @@ namespace Player
         // Inspector assigned variables
         [SerializeField] private float playerSprintSpeed = 5;
         [SerializeField] private float characterJumpHeight = 2;
-        [SerializeField] private int smallAttackTimeout = 5;
         [SerializeField] private int mediumAttackTimeout = 10;
         [SerializeField] private int bigAttackTimeout = 15;
         [SerializeField] private GameObject laserBeam;
         [SerializeField] private GameObject swordSlash;
         [SerializeField] private GameObject swordSlash2;
         [SerializeField] private GameObject sword;
-        [SerializeField] private int _baseHealth;
-        [SerializeField] private Renderer _characterRenderer;
+        [SerializeField] private int baseHealth;
+        [SerializeField] private Renderer characterRenderer;
         [SerializeField] private Image healthBar;
-        [SerializeField] private int baseDamage=10;
+        [SerializeField] private int baseDamage = 10;
         [SerializeField] private Image mediumAttackImage;
         [SerializeField] private Text mediumAttackCountdownText;
         [SerializeField] private Image bigAttackImage;
@@ -44,7 +42,6 @@ namespace Player
         private Rigidbody _rb;
 
         // runtime assigned variables
-        private float _smallAttackTriggeredTime = 0;
         private bool _holdingSword = false;
         private bool _pausePlayerInput = false;
         private Color _baseColour;
@@ -52,12 +49,11 @@ namespace Player
         private static readonly int BaseColor = Shader.PropertyToID("BaseColor");
         private float _playerXp = 0;
         private IDisposable _dieCoroutine;
-        [HideInInspector] public ReactiveProperty<int> health = new ReactiveProperty<int>(20);
+        [HideInInspector] public ReactiveProperty<float> health = new ReactiveProperty<float>(20);
         private int _npcLayerMask = 1 << 7;
         private Vector3 _playerCenter;
         private IDisposable _mediumAttackCoroutine;
         private IDisposable _bigAttackCoroutine;
-
 
 
         // Start is called before the first frame update
@@ -66,9 +62,15 @@ namespace Player
             _characterController = GetComponent<CharacterController>();
             _animator = GetComponent<Animator>();
             _rb = GetComponent<Rigidbody>();
-            _characterMaterial = _characterRenderer.material;
-            _baseColour = _characterMaterial.color;
             _playerCenter = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+            _characterMaterial = characterRenderer.material;
+            _baseColour = _characterMaterial.color;
+        }
+
+        private void Start()
+        {
+            baseHealth *= Mathf.FloorToInt(1 + GameCache.GameData.PlayerLevel / 25);
+            health.Value = GameCache.GameData.PlayerCurrentHealth;
             
             health.Subscribe((x) =>
             {
@@ -77,13 +79,9 @@ namespace Player
                     _dieCoroutine = Death().ToObservable().Subscribe();
                 }
 
-                healthBar.fillAmount = (float)x / (float)_baseHealth;
+                GameCache.GameData.PlayerCurrentHealth = x;
+                healthBar.fillAmount = (float) x / (float) baseHealth;
             });
-        }
-
-        private void Start()
-        {
-            health.Value = _baseHealth * Mathf.FloorToInt(1+ GameCache.GameData.PlayerXp/100);
         }
 
         void Update()
@@ -165,7 +163,7 @@ namespace Player
             yield return new WaitForSeconds(0.9f);
             laserBeam.SetActive(true);
             yield return new WaitForSeconds(0.5f);
-            
+
             var hitColliders = new RaycastHit[10];
             Physics.RaycastNonAlloc(new Ray(transform.position, transform.forward), hitColliders, 10f, _npcLayerMask);
             foreach (var ray in hitColliders)
@@ -173,12 +171,14 @@ namespace Player
                 if (ray.collider == null) continue;
                 NpcCommon.DamageNpc(ray.collider.gameObject, baseDamage * 3);
             }
+
             _animator.ResetTrigger("Laser Attack");
             laserBeam.SetActive(false);
             _pausePlayerInput = false;
-            MainThreadDispatcher.StartCoroutine(SetAttackUserInterfaceTimeout(bigAttackImage, bigAttackCountdownText, bigAttackTimeout));
+            MainThreadDispatcher.StartCoroutine(SetAttackUserInterfaceTimeout(bigAttackImage, bigAttackCountdownText,
+                bigAttackTimeout));
             yield return new WaitForSeconds(bigAttackTimeout);
-            
+
             _bigAttackCoroutine = null;
         }
 
@@ -204,8 +204,9 @@ namespace Player
                 if (npc == null) continue;
                 NpcCommon.DamageNpc(npc.gameObject, Mathf.FloorToInt(damage));
             }
+
             yield return new WaitForSeconds(0.5f);
-            
+
             // second slash
             swordSlash.SetActive(false);
             swordSlash2.SetActive(true);
@@ -217,9 +218,11 @@ namespace Player
                 if (npc == null) continue;
                 NpcCommon.DamageNpc(npc.gameObject, Mathf.FloorToInt(damage));
             }
+
             swordSlash2.SetActive(false);
             _pausePlayerInput = false;
-            MainThreadDispatcher.StartCoroutine(SetAttackUserInterfaceTimeout(mediumAttackImage, mediumAttackCountdownText, mediumAttackTimeout));
+            MainThreadDispatcher.StartCoroutine(SetAttackUserInterfaceTimeout(mediumAttackImage,
+                mediumAttackCountdownText, mediumAttackTimeout));
             yield return new WaitForSeconds(mediumAttackTimeout);
 
             _mediumAttackCoroutine = null;
@@ -261,7 +264,6 @@ namespace Player
 
             image.color = startColor;
             countdownText.enabled = false;
-
         }
 
         private void OnDestroy()

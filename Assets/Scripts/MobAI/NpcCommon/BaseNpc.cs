@@ -41,7 +41,6 @@ namespace MobAI.NpcCommon
             _npcBaseColor = _npcMaterial.color;
             enabled = true;
             playerTransform = player.transform;
-            RandomizeHealth();
             currentHealth.Value = baseHealth;
         }
 
@@ -52,6 +51,8 @@ namespace MobAI.NpcCommon
             animator = GetComponent<Animator>();
             agent.speed = baseSpeed;
             playerTransform = player.transform;
+            RandomizeHealth();
+            baseHealth *= Mathf.FloorToInt(1+ GameCache.GameData.PlayerLevel/30);
 
             currentHealth.Subscribe((x) =>
             {
@@ -60,7 +61,7 @@ namespace MobAI.NpcCommon
                 {
                     enableStatefulMb = false;
                     agent.velocity = Vector3.zero;
-                    agent.enabled = false;
+                    agent.speed = 0;
                     _deathCoroutine = Death().ToObservable().Subscribe();
                 }
                 healthBar.fillAmount = (Mathf.Max(x, 0) / baseHealth);
@@ -85,7 +86,7 @@ namespace MobAI.NpcCommon
             animator.SetTrigger("Death");
             yield return new WaitForSeconds(4f);
             GameCache.GameData.DemonsKilled++;
-            GameCache.GameData.PlayerXp += 10;
+            GameCache.GameData.PlayerXP += 10;
             Destroy(gameObject);
         }
 

@@ -45,9 +45,8 @@ namespace World
 
         private void Awake()
         {
+            RandomSeedProvider.CurrentWorldIndex = GameCache.GameData.CurrentWorldIndex;
             // create new game data if we haven't assigned any
-            GameCache.GameData ??= new GameData();
-
             GenerateWorld();
         }
 

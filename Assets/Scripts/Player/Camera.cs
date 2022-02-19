@@ -11,8 +11,8 @@ namespace Player
         [SerializeField]private float cameraOffsetFromPlayer;
         [SerializeField]private Vector3 cameraAngles;
 
-
         // runtime assigned variables
+        public Transform cameraTarget;
         private Vector3 _cameraOffset;
         private Vector3 _cameraCurrentVelocity;
         private RaycastHit oldHit;
@@ -20,13 +20,12 @@ namespace Player
         
         // cached variables
         private int _wallLayerMask = 1 << 3;
-        private Transform _playerTransform;
 
         private void Start()
         {
-            _playerTransform = player.transform;
+            cameraTarget = player.transform;
             // let the player script set the camera angles from the player.
-            var playerPos = _playerTransform.position;
+            var playerPos = cameraTarget.position;
         
             transform.position = playerPos + new Vector3(0, 0, cameraOffsetFromPlayer);
             transform.RotateAround(playerPos, new Vector3(0, 1, 0), cameraAngles.x);
@@ -39,14 +38,14 @@ namespace Player
         private void LateUpdate()
         {
             // camera follow
-            var cameraPos = Vector3.SmoothDamp(transform.position, _cameraOffset + _playerTransform.position, ref _cameraCurrentVelocity,
+            var cameraPos = Vector3.SmoothDamp(transform.position, _cameraOffset + cameraTarget.position, ref _cameraCurrentVelocity,
                 cameraDampTime);
             transform.position = cameraPos;
         }
         
         private void FixedUpdate()
         {
-            var playerPos = _playerTransform.position;
+            var playerPos = cameraTarget.position;
             var ray = new Ray(playerPos,  transform.position - playerPos);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 10, _wallLayerMask))
@@ -69,6 +68,23 @@ namespace Player
                     oldHit = new RaycastHit();
                 }
             }
+        }
+
+        /// <summary>
+        /// Changes the camera to the specified transform
+        /// </summary>
+        /// <param name="targetTransform">the target to focus on</param>
+        public void ChangeCameraTarget(Transform targetTransform)
+        {
+            cameraTarget = targetTransform;
+        }
+
+        /// <summary>
+        /// Resets the camera to point to the player
+        /// </summary>
+        public void ResetCameraTarget()
+        {
+            cameraTarget = player.transform;
         }
     }
 }
