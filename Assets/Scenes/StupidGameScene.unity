@@ -1368,7 +1368,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -200, y: 145}
+  m_AnchoredPosition: {x: -200, y: 150}
   m_SizeDelta: {x: 400, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &567032597
@@ -2842,6 +2842,7 @@ MonoBehaviour:
   worldManager: {fileID: 1378332949}
   bulletManager: {fileID: 621523992}
   uiController: {fileID: 1603421609}
+  cameraScript: {fileID: 0}
 --- !u!1 &1402082712
 GameObject:
   m_ObjectHideFlags: 0
@@ -3494,7 +3495,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1735875768}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -4396,6 +4397,10 @@ PrefabInstance:
     - target: {fileID: 4395676622183204292, guid: 12a14c4d8f4c0845bba73c684654e624, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 27.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395676622183204293, guid: 12a14c4d8f4c0845bba73c684654e624, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4395676622226002500, guid: 12a14c4d8f4c0845bba73c684654e624, type: 3}
       propertyPath: pauseCanvas
