@@ -20,7 +20,7 @@ namespace MobAI.NpcCommon
         public float baseSpeed = 2;
         public float baseHealth = 20;
         public Animator animator;
-        public GameObject player;
+        [HideInInspector]public GameObject player;
         public ReactiveProperty<float> currentHealth = new ReactiveProperty<float>();
         public Image healthBar;
         public Transform cameraTransform;
@@ -43,7 +43,6 @@ namespace MobAI.NpcCommon
             _npcMaterial = npcRenderer.material;
             _npcBaseColor = _npcMaterial.color;
             enabled = true;
-            playerTransform = player.transform;
             currentHealth.Value = baseHealth;
         }
 

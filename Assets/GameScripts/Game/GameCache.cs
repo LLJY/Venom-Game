@@ -9,6 +9,7 @@ using Camera = Player.Camera;
 
 public class GameCache : MonoBehaviour
 {
+    public static Vector3 worldSize;
     public GameObject Player;
     public GameObject worldManager;
     public GameObject bulletManager;

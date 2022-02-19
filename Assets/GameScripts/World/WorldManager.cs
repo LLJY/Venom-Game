@@ -53,9 +53,10 @@ namespace World
 
         private void Start()
         {
-            GenerateObstacles();
             // do this after everything has been done
             MovePlayerToStartPosition();
+            GenerateObstacles();
+
         }
 
         /// <summary>
@@ -148,6 +149,7 @@ namespace World
             var worldSize = ground.GetComponent<Renderer>().bounds.size;
             worldSize.x -= obstacleMargin.x;
             worldSize.y -= obstacleMargin.y;
+            GameCache.worldSize = worldSize;
             var worldArea = worldSize.x * worldSize.z * (Mathf.PI / (2 * Mathf.Pow(1f, 1f / 3f)));
             var obstacleArea = Mathf.PI * obstacleRadius * obstacleRadius;
             var numberOfObstaclesFit = worldArea / obstacleArea;
@@ -163,7 +165,7 @@ namespace World
                     randomPos = new Vector3(Random.Range(-worldSize.x / 2, worldSize.x / 2), 0,
                         Random.Range(-worldSize.z / 2, worldSize.z / 2));
                     if (obstaclePos.Count == 0 ||
-                        !obstaclePos.Any(x => Vector3.Distance(x, randomPos) < obstacleRadius)) break;
+                        !obstaclePos.Any(x => Vector3.Distance(x, randomPos) < obstacleRadius) || Vector3.Distance(player.transform.position, randomPos) > 5f) break;
                     randomPos = Vector3.zero;
                 }
 
