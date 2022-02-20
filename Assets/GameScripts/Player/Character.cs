@@ -72,12 +72,10 @@ namespace Player
 
         private void Start()
         {
-            Debug.Log("playerlevel" + GameCache.GameData.PlayerLevelRaw);
+            // sets up health and other variable listeners
             baseHealth *= Mathf.FloorToInt(1 + GameCache.GameData.PlayerLevel / 25);
             baseDamage *= Mathf.FloorToInt(1 + GameCache.GameData.PlayerLevel / 30);
             
-            Debug.Log("player health" + GameCache.GameData.PlayerCurrentHealth);
-
             // give the player full health on respawn
             if (GameCache.GameData.FirstTimePlaying || GameCache.GameData.FreshRespawn)
             {
@@ -115,6 +113,9 @@ namespace Player
             HandleCharacterAttacks();
         }
 
+        /// <summary>
+        /// simple function that handles the character's movement
+        /// </summary>
         void HandleCharacterMovement()
         {
             // ensure to only move the character when grounded
@@ -156,6 +157,9 @@ namespace Player
             _characterController.Move(_currentCharacterVelocity * Time.deltaTime);
         }
 
+        /// <summary>
+        /// Simple function that handles the character's attack inputs
+        /// </summary>
         void HandleCharacterAttacks()
         {
             if (Input.GetButton("Fire2") && _bigAttackCoroutine == null)
@@ -176,6 +180,11 @@ namespace Player
             }
         }
 
+        /// <summary>
+        /// Coroutine that handles the laser attack
+        /// does a raycast and tries to damage all the colliders hit.
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator BigAttack()
         {
             /*
@@ -207,11 +216,17 @@ namespace Player
             _bigAttackCoroutine = null;
         }
 
+        /// <summary>
+        /// Coroutine that handles the medium (sword slash attack)
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator MediumAttack()
         {
             /*
              * Stop the player, wait for the player to stop, Trigger the animation, set the sword slashing animation 1
              * to active, wait a while then set the sword slashing animation 2
+             *
+             * also damage the targets once for each slash
              */
             _pausePlayerInput = true;
             _currentCharacterVelocity = new Vector3(0, 0, 0);
@@ -253,6 +268,12 @@ namespace Player
             _mediumAttackCoroutine = null;
         }
 
+        /// <summary>
+        /// Coroutine that handles player damage
+        /// tints the player red and updates the value of health, then slowly tints the player back to normal.
+        /// </summary>
+        /// <param name="damage"></param>
+        /// <returns></returns>
         public IEnumerator DamagePlayer(int damage)
         {
             var time = 0.5f;
@@ -267,6 +288,11 @@ namespace Player
             }
         }
 
+        /// <summary>
+        /// Coroutine that handles player death.
+        /// Plays animation, waits, then shows the death screen
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator Death()
         {
             Debug.Log("Death");
@@ -277,8 +303,19 @@ namespace Player
             yield return null;
         }
 
+        /// <summary>
+        /// Coroutine to show weapon timeout in the user interface
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="countdownText"></param>
+        /// <param name="countdownTime"></param>
+        /// <returns></returns>
         private IEnumerator SetAttackUserInterfaceTimeout(Image image, Text countdownText, int countdownTime)
         {
+            /*
+             * Sets the sprite alpha to slightly translucent
+             * enables the countdown text and starts counting down
+             */
             var startColor = image.color;
             image.color = new Color(startColor.r, startColor.g, startColor.b, 0.2f);
             countdownText.enabled = true;

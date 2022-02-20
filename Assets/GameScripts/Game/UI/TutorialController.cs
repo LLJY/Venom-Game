@@ -23,7 +23,7 @@ namespace Game.UI
                 gameData.FirstTimeSeeingSuicide) return;
             enabled = false;
         }
-
+        
         private void ShowWelcomeMessage()
         {
             _uiController.ShowDialogBox("Welcome to Venom!",

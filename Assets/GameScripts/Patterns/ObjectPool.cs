@@ -28,6 +28,10 @@ namespace Patterns
             _subscriber = poolSize.Subscribe();
         }
 
+        /// <summary>
+        /// Updates the size of the object pool
+        /// </summary>
+        /// <param name="size"></param>
         private void UpdatePoolSize(int size)
         {
             if (_gameObjects == null || _objectScripts == null || _objectScripts.Length == 0)

@@ -11,10 +11,12 @@ namespace Obstacles.TeslaCoil
 {
     public class TeslaCoil : StatefulMonoBehaviour<TeslaCoil>
     {
+        // inspector assigned variables
         [SerializeField] private VisualEffect lightningVfx;
         [SerializeField] private Light light;
-        
         public int damage = 20;
+        
+        // runtime assigned variables
         private Quaternion _lightningDefaultRotation;
         private Transform _lightningVfxTransform;
         private float _defaultImpactOffset = -6.25f;
@@ -34,6 +36,11 @@ namespace Obstacles.TeslaCoil
             _transformPos = transform.position;
         }
 
+        /// <summary>
+        /// Coroutine that periodically shoots a lightning bolt upwards as long as the tesla coil
+        /// is not currently arcing to something else already.
+        /// </summary>
+        /// <returns></returns>
         IEnumerator PeriodicArc()
         {
             while (isActiveAndEnabled)
@@ -50,6 +57,12 @@ namespace Obstacles.TeslaCoil
             }
         }
 
+        /// <summary>
+        /// shoots a lightning bolt at a Vector 3 position and try to damage it
+        /// using the NpcCommon.DamageAnything utility script
+        /// </summary>
+        /// <param name="pos">the target position</param>
+        /// <returns></returns>
         IEnumerator ArcToObject(Vector3 pos)
         {
             _arcingToObject = true;
@@ -72,6 +85,10 @@ namespace Obstacles.TeslaCoil
             _arcingToObject = false;
         }
 
+        /// <summary>
+        /// Make the actual lightning using 
+        /// </summary>
+        /// <returns></returns>
         IEnumerator MakeArc()
         {
             lightningVfx.Play();
@@ -82,6 +99,7 @@ namespace Obstacles.TeslaCoil
 
         private void OnTriggerEnter(Collider other)
         {
+            // arc to an object if it enters the trigger
             if (_arcingToObject) return;
             _arcToObjectCoroutine = ArcToObject(other.transform.position).ToObservable().Subscribe();
         }

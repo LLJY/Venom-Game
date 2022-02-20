@@ -24,6 +24,10 @@ namespace MobAI.Suicide
 
         public override void Update()
         {
+            /*
+             * move to the player, but stop a distance away, then trigger the attack coroutine
+             * note that the rock's position is reset in Rock.cs, along with the pick up animation
+             */
             _behaviour.agent.SetDestination(_behaviour.playerTransform.position);
             if (Vector3.Distance(_behaviour.playerTransform.position, _behaviour.transform.position) < _behaviour.attackRadius)
             {
@@ -40,8 +44,16 @@ namespace MobAI.Suicide
             }
         }
 
+        /// <summary>
+        /// Suicide NPC attack coroutine
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator Attack()
         {
+            /*
+             * trigger the throw animation, activate the rigidbody, unparent the rock for independent motion
+             * and YEET the rock towards the player's transform/position
+             */
             if (_behaviour.rock.isKinematic)
             {
                 Debug.Log("attack triggered");

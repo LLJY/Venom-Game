@@ -9,6 +9,11 @@ namespace MobAI.NpcCommon
 {
     public static class NpcCommon
     {
+        /// <summary>
+        /// Only damage NPCs, if the GameObject somehow only contains an npc
+        /// </summary>
+        /// <param name="npc"></param>
+        /// <param name="damage"></param>
         public static void DamageNpc(GameObject npc, int damage)
         {
             if (npc == null) return;
@@ -29,6 +34,11 @@ namespace MobAI.NpcCommon
             }
         }
         
+        /// <summary>
+        /// apply damage to both npcs and player
+        /// </summary>
+        /// <param name="playerOrNpc">gameObject of the object to damage</param>
+        /// <param name="damage">damage to inflict on said object</param>
         public static void DamageAnything(GameObject playerOrNpc, int damage)
         {
             if (playerOrNpc == null) return;
@@ -36,20 +46,9 @@ namespace MobAI.NpcCommon
             {
                 MainThreadDispatcher.StartCoroutine(GameCache.playerScript.DamagePlayer(damage));
             }
-            else if (playerOrNpc.name.StartsWith("Harm", StringComparison.InvariantCultureIgnoreCase))
+            else
             {
-                var script = playerOrNpc.GetComponent<HarmNpc>();
-                MainThreadDispatcher.StartCoroutine(script.DamageNpc(damage));
-            }
-            else if (playerOrNpc.name.StartsWith("Anxiety", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var script = playerOrNpc.GetComponent<AnxietyNpc>();
-                MainThreadDispatcher.StartCoroutine(script.DamageNpc(damage));
-            }
-            else if (playerOrNpc.name.StartsWith("Suicide", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var script = playerOrNpc.GetComponent<SuicideNpc>();
-                MainThreadDispatcher.StartCoroutine(script.DamageNpc(damage));
+                DamageNpc(playerOrNpc, damage);
             }
         }
     }

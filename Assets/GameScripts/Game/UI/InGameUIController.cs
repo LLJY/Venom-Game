@@ -23,21 +23,14 @@ namespace Game.UI
         private IDisposable _greenArrowLerpCoroutine;
 
         public delegate void DialogCallback(Canvas dialog);
-
-        // private IDisposable _dialogueBoxScrollCoroutine;
-
+        
         /// <summary>
-        /// Shows the game dialogue box
+        /// Shows the dialog box
         /// </summary>
-        /// <param name="title">dialogue title</param>
-        /// <param name="message">dialogue message</param>
-        /// <param name="option1">dialogue option 1</param>
-        /// <param name="callback1">dialogue option 1 callback</param>
-        /// <param name="option2">dialogue option 2</param>
-        /// <param name="callback2">dialogue option 2 callback</param>
-        /// <param name="option3">dialogue option 3</param>
-        /// <param name="callback3">dialogue option 3 callback</param>
-        /// <exception cref="ArgumentException"></exception>
+        /// <param name="title">dialog box title</param>
+        /// <param name="message">dialog box message</param>
+        /// <param name="options">array of 3 option titles (max)</param>
+        /// <param name="callbacks">array of 3 callbacks for each option</param>
         public void ShowDialogBox(string title, string message, string[] options = null,
             DialogCallback[] callbacks = null)
         {
@@ -88,7 +81,7 @@ namespace Game.UI
         public void SetGreenArrowTarget(RectTransform target)
         {
             /*
-             * stop the coroutine, set the target position and anchors
+             * stop the coroutine, set the target position and anchors so that the arrow is pointing at the object
              * then enable the gamobject and start the coroutine
              */
             if (_greenArrowLerpCoroutine != null)
@@ -108,7 +101,7 @@ namespace Game.UI
         }
 
         /// <summary>
-        /// stops the coroutine and makes the arrow invisible
+        /// stops the arrow coroutine and makes the arrow invisible
         /// </summary>
         public void HideArrow()
         {
@@ -120,6 +113,10 @@ namespace Game.UI
             greenArrow.gameObject.SetActive(false);
         }
 
+        /// <summary>
+        /// Makes the Green Arrow move back and forth
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator GreenArrowLerp()
         {
             const int lerpPrecision = 20;
@@ -144,15 +141,21 @@ namespace Game.UI
 
         private void OnDestroy()
         {
+            // make sure to stop the coroutine (dispose does that in this context)
             _greenArrowLerpCoroutine?.Dispose();
         }
 
+        /// <summary>
+        /// Reloads the game scene, used for respawning
+        /// </summary>
         public void ReloadScene()
         {
             GameCache.GameData.FreshRespawn = true;
             SceneManager.LoadScene("StupidGameScene");
         }
 
+        // unused code, just left it here 
+        
         // /// <summary>
         // /// Scrolls the dialog using a coroutine
         // /// WARNING, since this method modifies strings many times, you WILL trigger GC more often if you use this method

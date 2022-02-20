@@ -29,7 +29,7 @@ namespace Obstacles.Turret
             var turretTransform = _behaviour.turretTop.transform;
 
             var playerTurretDistance = Vector3.Distance(playerTransform.position, turretTransform.position);
-            // set the turret active
+            // set the turret to inactive if the player's position exceeds the active radius
             if (playerTurretDistance > _behaviour.activeRadius)
             {
                 _behaviour.MoveTurretToTransform(_behaviour.turretBase.transform);

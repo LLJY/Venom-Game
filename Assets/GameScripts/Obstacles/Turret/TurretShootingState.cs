@@ -41,7 +41,8 @@ namespace Obstacles.Turret
             var turretTransform = _behaviour.turretTop.transform;
 
             var playerTurretDistance = Vector3.Distance(playerTransform.position, turretTransform.position);
-            // set the turret active
+            
+            // set the turret to shoot if the player crosses the threshold
             if (playerTurretDistance < _behaviour.activeRadius / 2)
             {
                 _behaviour.MoveTurretToTransform(playerTransform);
@@ -63,7 +64,10 @@ namespace Obstacles.Turret
         public override void FixedUpdate()
         {
         }
-
+        /// <summary>
+        /// Coroutine that shoots bullets from the turret
+        /// </summary>
+        /// <returns></returns>
         IEnumerator Shoot()
         {
             _shouldRunCoroutine = false;

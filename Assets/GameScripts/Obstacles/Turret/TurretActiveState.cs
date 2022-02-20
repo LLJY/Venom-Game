@@ -30,12 +30,14 @@ namespace Obstacles.Turret
             var turretTransform = _behaviour.turretTop.transform;
 
             var playerTurretDistance = Vector3.Distance(playerTransform.position, turretTransform.position);
-            // set the turret active
+            
+            // set the turret active if it crosses the active radius
             if (playerTurretDistance < _behaviour.activeRadius && playerTurretDistance > _behaviour.activeRadius/2)
             {
                 _behaviour.MoveTurretToTransform(playerTransform);
             }else if(playerTurretDistance < _behaviour.activeRadius/2)
             {
+                // set the turret to shoot if it crosses half of the active radius
                 SetState(_behaviour.ShootingState);
             }
             else

@@ -10,14 +10,16 @@ namespace Game.UI
 {
     public class PauseMenuController : MonoBehaviour
     {
-        private bool _isPaused = false;
+        // inspector assigned variables
         public Canvas pauseCanvas;
         public Button resumeButton;
         public Button saveGameButton;
         public Button mainMenuButton;
         public Button quitGameButton;
         public Button pauseGameButton;
-
+        
+        // runtime assigned variables
+        private bool _isPaused = false;
         private void Awake()
         {
             resumeButton.onClick.AddListener(Resume);

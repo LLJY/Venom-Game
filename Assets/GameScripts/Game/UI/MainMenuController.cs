@@ -11,6 +11,7 @@ namespace Game.UI
 {
     public class MainMenuController: MonoBehaviour
     {
+        // inspector assigned variables
         public Text[] saveSlotInfo;
         public Text[] emptySaveSlotText;
         public Button[] saveButtons;
@@ -19,6 +20,8 @@ namespace Game.UI
         public Button backButton;
         public Button playButton;
         public Button quitButton;
+        
+        // runtime assigned variables
         private List<GameData> saves=new List<GameData>();
 
         private void Awake()
@@ -100,12 +103,18 @@ namespace Game.UI
             SceneManager.LoadScene("StupidGameScene");
         }
 
+        /// <summary>
+        /// Shows the play/home screen and hides the save screen
+        /// </summary>
         public void ShowHomeScreen()
         {
             saveScreen.enabled = false;
             playScreen.enabled = true;
         }
 
+        /// <summary>
+        /// Shows the saves screen and hides the play/home screen
+        /// </summary>
         public void ShowSavesScreen()
         {
             saveScreen.enabled = true;

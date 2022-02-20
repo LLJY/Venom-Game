@@ -5,6 +5,7 @@ namespace Obstacles.Turret
 {
     public class TurretBehaviour: StatefulMonoBehaviour<TurretBehaviour>
     {
+        // inspector variables
         public GameObject turretTop;
         public GameObject turretBase;
         public GameObject leftBarrel;
@@ -15,7 +16,6 @@ namespace Obstacles.Turret
         [HideInInspector]public Material turretTemperatureMaterialRenderer;
         public GameObject bulletPrefab;
         public float colorChangeTime=1;
-
         public float rotationSpeed = 2;
         public float bulletSpeed = 10;
         public float activeRadius = 5f;
@@ -52,6 +52,11 @@ namespace Obstacles.Turret
                 Quaternion.Slerp(turretTransform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
+        /// <summary>
+        /// Lerps the colour of the turret temperature for a nice fade animation
+        /// </summary>
+        /// <param name="color">target color</param>
+        /// <returns></returns>
         public IEnumerator LerpTurretColour(Color color)
         {
             var startColor = turretTemperatureMaterialRenderer.color;

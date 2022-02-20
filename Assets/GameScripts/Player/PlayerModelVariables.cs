@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Player
 {
+    /// <summary>
+    /// WIP, was supposed to contain animator names
+    /// </summary>
     public static class PlayerModelVariables
     {
         public static readonly int SwordEquippedBool = Animator.StringToHash("Sword Equipped");

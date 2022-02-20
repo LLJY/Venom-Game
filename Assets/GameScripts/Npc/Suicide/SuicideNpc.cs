@@ -42,9 +42,11 @@ namespace MobAI.Suicide
             CurrentState = _wanderState;
             currentHealth.Subscribe((x) =>
             {
-                // do not attack, go back to wander
-                // the base Npc script will disable any movement
-                CurrentState = _wanderState;
+                // go back to wander state when dead, the base npc script will disable the navmeshagent.
+                if (x <= 0)
+                {
+                    CurrentState = _wanderState;
+                }
             });
         }
         

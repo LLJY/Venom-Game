@@ -37,6 +37,10 @@ namespace Player
         
         private void FixedUpdate()
         {
+            /*
+             * Simple code to raycast a distance of 10 and check for a wall collision, if a collision happens it means that
+             * the player is obstructed by a wall. If the player is obstructed, make the wall translucent.
+             */
             var playerPos = cameraTarget.position;
             var ray = new Ray(playerPos,  transform.position - playerPos);
             RaycastHit hit;
@@ -62,6 +66,10 @@ namespace Player
             }
         }
 
+        /// <summary>
+        /// calculates the camera offsets and rotations around a target position
+        /// </summary>
+        /// <param name="pos">target position</param>
         public void CalculateCameraPosition(Vector3 pos)
         {
             transform.position = pos + new Vector3(0, 0, cameraOffsetFromPlayer);

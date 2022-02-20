@@ -16,6 +16,12 @@ namespace Obstacles.Turret
             LateStart().ToObservable().Subscribe();
         }
 
+        /// <summary>
+        /// Not strictly necessary, but it takes some time for the bulletObjectPool to be
+        /// Assigned to the GameCache static class, so wait for a bit before attempting to set the
+        /// instance of _pool
+        /// </summary>
+        /// <returns></returns>
         IEnumerator LateStart()
         {
             yield return new WaitForSeconds(0.1f);
@@ -24,6 +30,7 @@ namespace Obstacles.Turret
 
         private void OnTriggerEnter(Collider other)
         {
+            // damage whatever that the bullet hits
             if (other.gameObject.layer == 7)
             {
                 NpcCommon.DamageAnything(other.gameObject, damage);

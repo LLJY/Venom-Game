@@ -30,6 +30,7 @@ namespace World
 
         private void SetDoorPosition()
         {
+            // hardcoded door positions to -10 of the attached wall's z coordinate, which makes it just right at the corner
             var adjacentPos = adjacentWall.transform.position;
             var wallPos = wall.transform.position;
             transform.position = new Vector3(Mathf.Sign(adjacentPos.x) * -10 + adjacentPos.x, 0, Mathf.Sign(wallPos.z) * -1.1f + wallPos.z);

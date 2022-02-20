@@ -40,6 +40,9 @@ namespace Game
         public int PlayerLevel => Mathf.FloorToInt(PlayerLevelRaw);
         public float PlayerLevelProgress => Mathf.Ceil(PlayerLevelRaw) - PlayerLevelRaw; 
 
+        /// <summary>
+        /// Saves the current GameData into the selected slot
+        /// </summary>
         public static void SaveGame()
         {
             var gameData = GameCache.GameData;
@@ -50,6 +53,11 @@ namespace Game
             formatter.Serialize(stream, gameData);
         }
         
+        /// <summary>
+        /// Loads the game data from the selected slot
+        /// </summary>
+        /// <param name="saveSlot">game save slot</param>
+        /// <returns></returns>
         public static GameData LoadGameData(int saveSlot)
         {
             var path = $"{Application.persistentDataPath}/save-{saveSlot}.dat";

@@ -61,6 +61,7 @@ namespace MobAI.NpcCommon
                 Debug.Log($"npc health {x}");
                 if (x <= 0 && _deathCoroutine == null)
                 {
+                    // disable the agent's movements and disable updating
                     enableStatefulMb = false;
                     agent.velocity = Vector3.zero;
                     agent.speed = 0;
@@ -70,6 +71,7 @@ namespace MobAI.NpcCommon
             });
             cameraTransform = GameCache.CameraScript.transform;
 
+            // ensure that the mob spawns on a navmesh, otherwise, destroy the mob to avoid logspam
             if (!agent.isOnNavMesh)
             {
                 Destroy(gameObject);

@@ -37,6 +37,10 @@ namespace Obstacles.PressurePlate
         public override void FixedUpdate()
         {
             base.FixedUpdate();
+            /*
+             * raise the spikes if there are objects present in the trigger and then try to damage NPC or players standing over it,
+             * lower if there are none
+             */
             if (objectsInTrigger.Count > 0 && !isRaised)
             {
                 isRaised = true;
@@ -52,8 +56,16 @@ namespace Obstacles.PressurePlate
             }
         }
 
+        /// <summary>
+        /// Damages all objects in an overlapsphere of radius 2f around the pressure plate
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator DamageObjects()
         {
+            /*
+             * get the colliding objects with the overlapsphere, then try to damage them
+             * using the NpcCommon.DamageAnything utility script
+             */
             Collider[] hitColliders = new Collider[4];
             Physics.OverlapSphereNonAlloc(_transformPos, 2f, hitColliders, _damageableLayerMask);
             while (objectsInTrigger.Count > 0)
@@ -71,6 +83,12 @@ namespace Obstacles.PressurePlate
             _damagePlayerCoroutine = null;
         }
 
+        /// <summary>
+        /// Sets the spike position to the target positions using LinEaR interPolation
+        /// </summary>
+        /// <param name="platePosition">target plate position</param>
+        /// <param name="spikePosition">target spike position</param>
+        /// <returns></returns>
         private IEnumerator SetSpikePosition(float platePosition, float spikePosition)
         {
             var plateStartPos = transform.position;
