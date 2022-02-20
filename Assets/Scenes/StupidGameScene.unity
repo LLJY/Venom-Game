@@ -1330,6 +1330,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f4e5dd2165039f4a878d1c1260761df, type: 3}
+--- !u!114 &547640982 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4395676622226002507, guid: 12a14c4d8f4c0845bba73c684654e624, type: 3}
+  m_PrefabInstance: {fileID: 4395676621699368157}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603421604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8577446f66fd48f0a2506c2eccaf5aa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &567032595
 GameObject:
   m_ObjectHideFlags: 0
@@ -2696,6 +2707,7 @@ MonoBehaviour:
   _suicideMobPrefab: {fileID: 3385471854641137908, guid: caee25cd9afcdd3b3b4850e67633ced8, type: 3}
   baseSpawnRate: 0.2
   baseMaxSpawns: 10
+  tutorialController: {fileID: 547640982}
 --- !u!1 &1402082712
 GameObject:
   m_ObjectHideFlags: 0
@@ -2799,7 +2811,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1433640290}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f5f238a6ab04fedb6a332a4549fd2cf, type: 3}
   m_Name: 
@@ -3400,7 +3412,7 @@ GameObject:
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!81 &1769474861
 AudioListener:
@@ -3483,7 +3495,7 @@ MonoBehaviour:
   cameraDampTime: 1
   cameraOffsetFromPlayer: 30
   cameraAngles: {x: 130, y: 90, z: 0}
-  cameraTarget: {fileID: 0}
+  cameraTarget: {fileID: 954724068}
 --- !u!114 &1769474865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4279,6 +4291,10 @@ PrefabInstance:
       propertyPath: xpBar
       value: 
       objectReference: {fileID: 1717683469}
+    - target: {fileID: 4395676622226002507, guid: 12a14c4d8f4c0845bba73c684654e624, type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 1769474862}
     - target: {fileID: 4395676622226002507, guid: 12a14c4d8f4c0845bba73c684654e624, type: 3}
       propertyPath: healthBar
       value: 

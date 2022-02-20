@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Game.UI;
 using UniRx;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -13,6 +14,7 @@ namespace GameScripts.Npc
         [SerializeField] private GameObject _suicideMobPrefab;
         public float baseSpawnRate = 0.2f;
         public int baseMaxSpawns = 10;
+        public TutorialController tutorialController;
 
         /// <summary>
         /// mob spawn rate in seconds
@@ -42,6 +44,11 @@ namespace GameScripts.Npc
             return mobChance < 0.05f ? 2 : mobChance < 0.85f ? 1 : 0;
         }
 
+        /// <summary>
+        /// Coroutine to spawn mobs at random positions at a predefined spawnRate
+        /// shows tutorials for mobs if necessary
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator Spawner()
         {
             for (int i = 0; i< _maxMobs; i++)
@@ -49,21 +56,34 @@ namespace GameScripts.Npc
                 var worldSize = GameCache.worldSize;
                 var randomPos = new Vector3(Random.Range(-worldSize.x / 2, worldSize.x / 2), 0,
                     Random.Range(-worldSize.z / 2, worldSize.z / 2));
+                
                 switch (ChooseMobSpawn())
                 {
                     case 0:
                     {
-                        Instantiate(_anxietyMobPrefab, randomPos, Quaternion.identity);
+                        var go = Instantiate(_anxietyMobPrefab, randomPos, Quaternion.identity);
+                        if (!GameCache.GameData.FirstTimePlaying && GameCache.GameData.FirstTimeSeeingAnxiety)
+                        {
+                            tutorialController.ShowAnxietyMobTutorial(go.transform);
+                        }
                         break;
                     }
                     case 1:
                     {
-                        Instantiate(_harmMobPrefab, randomPos, Quaternion.identity);
+                        var go = Instantiate(_harmMobPrefab, randomPos, Quaternion.identity);
+                        if (!GameCache.GameData.FirstTimePlaying && GameCache.GameData.FirstTimeSeeingHarm)
+                        {
+                            tutorialController.ShowHarmMobTutorial(go.transform);
+                        }
                         break;
                     }
                     case 2:
                     {
-                        Instantiate(_suicideMobPrefab, randomPos, Quaternion.identity);
+                        var go = Instantiate(_suicideMobPrefab, randomPos, Quaternion.identity);
+                        if (!GameCache.GameData.FirstTimePlaying && GameCache.GameData.FirstTimeSeeingSuicide)
+                        {
+                            tutorialController.ShowSuicideMobTutorial(go.transform);
+                        }
                         break;
                     }
                 }

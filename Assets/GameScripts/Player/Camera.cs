@@ -24,15 +24,7 @@ namespace Player
         private void Start()
         {
             cameraTarget = player.transform;
-            // let the player script set the camera angles from the player.
-            var playerPos = cameraTarget.position;
-        
-            transform.position = playerPos + new Vector3(0, 0, cameraOffsetFromPlayer);
-            transform.RotateAround(playerPos, new Vector3(0, 1, 0), cameraAngles.x);
-            transform.RotateAround(playerPos, new Vector3(1, 0, 0), cameraAngles.y);
-            transform.LookAt(playerPos);
-
-            _cameraOffset = transform.position - playerPos;
+            CalculateCameraPosition(cameraTarget.position);
         }
         
         private void LateUpdate()
@@ -70,6 +62,17 @@ namespace Player
             }
         }
 
+        public void CalculateCameraPosition(Vector3 pos)
+        {
+            transform.position = pos + new Vector3(0, 0, cameraOffsetFromPlayer);
+            transform.RotateAround(pos, new Vector3(0, 1, 0), cameraAngles.x);
+            transform.RotateAround(pos, new Vector3(1, 0, 0), cameraAngles.y);
+            transform.LookAt(pos);
+
+            _cameraOffset = transform.position - pos;
+        }
+        
+
         /// <summary>
         /// Changes the camera to the specified transform
         /// </summary>
@@ -77,6 +80,7 @@ namespace Player
         public void ChangeCameraTarget(Transform targetTransform)
         {
             cameraTarget = targetTransform;
+            CalculateCameraPosition(targetTransform.position);
         }
 
         /// <summary>
@@ -84,7 +88,7 @@ namespace Player
         /// </summary>
         public void ResetCameraTarget()
         {
-            cameraTarget = player.transform;
+            ChangeCameraTarget(GameCache.playerStatic.transform);
         }
     }
 }

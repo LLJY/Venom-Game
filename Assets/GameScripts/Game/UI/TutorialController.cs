@@ -135,7 +135,7 @@ namespace Game.UI
                 });
         }
         
-        private void ShowSuicideMobTutorial(Transform position)
+        public void ShowSuicideMobTutorial(Transform position)
         {
             GameCache.CameraScript.ChangeCameraTarget(position);
             _uiController.ShowDialogBox("Suicide Mob",
@@ -150,7 +150,7 @@ namespace Game.UI
                     }
                 });
         }
-        private void ShowHarmMobTutorial(Transform position)
+        public void ShowHarmMobTutorial(Transform position)
         {
             GameCache.CameraScript.ChangeCameraTarget(position);
             _uiController.ShowDialogBox("Harm Mob",
@@ -165,7 +165,7 @@ namespace Game.UI
                     }
                 });
         }
-        private void ShowAnxietyMob(Transform position)
+        public void ShowAnxietyMobTutorial(Transform position)
         {
             GameCache.CameraScript.ChangeCameraTarget(position);
             _uiController.ShowDialogBox("Anxiety Mob",
