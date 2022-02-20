@@ -69,7 +69,12 @@ namespace MobAI.NpcCommon
                 healthBar.fillAmount = (Mathf.Max(x, 0) / baseHealth);
             });
             cameraTransform = GameCache.CameraScript.transform;
-            
+
+            if (!agent.isOnNavMesh)
+            {
+                Destroy(gameObject);
+            }
+
         }
 
         private void RandomizeHealth()

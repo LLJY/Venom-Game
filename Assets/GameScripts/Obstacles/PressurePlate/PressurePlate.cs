@@ -64,7 +64,6 @@ namespace Obstacles.PressurePlate
                     if (obj == null) continue;
                     NpcCommon.DamageAnything(obj.gameObject, damagePerSecond);
                 }
-                MainThreadDispatcher.StartCoroutine(GameCache.playerScript.DamagePlayer(damagePerSecond));
                 yield return new WaitForSeconds(1f);
             }
             _damagePlayerCoroutine?.Dispose();

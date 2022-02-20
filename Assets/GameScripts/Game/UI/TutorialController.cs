@@ -104,7 +104,7 @@ namespace Game.UI
         
         private void ShowXpBarTutorial()
         {
-            _uiController.SetGreenArrowTarget(healthBar);
+            _uiController.SetGreenArrowTarget(xpBar);
             _uiController.ShowDialogBox("Dopamine Bar",
                 "This is your dopamine bar, it tells you how much dopamine you have earned. You can gain dopamine by killing demons, your character will get stronger as you gain more dopamine.",
                 new []{"Got it!"},

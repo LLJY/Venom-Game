@@ -56,6 +56,7 @@ namespace Player
         private Vector3 _playerCenter;
         private IDisposable _mediumAttackCoroutine;
         private IDisposable _bigAttackCoroutine;
+        private IDisposable _xpBarSubscription;
 
 
         // Start is called before the first frame update
@@ -101,7 +102,7 @@ namespace Player
             });
             
             // update the xp bar
-            GameCache.GameData.PlayerXpReactiveProperty.Subscribe(x =>
+            _xpBarSubscription = GameCache.GameData.PlayerXpReactiveProperty.Subscribe(x =>
             {
                 xpBar.fillAmount = 1 - GameCache.GameData.PlayerLevelProgress;
                 xpBarText.text = GameCache.GameData.PlayerLevel.ToString();
@@ -294,6 +295,7 @@ namespace Player
         private void OnDestroy()
         {
             _dieCoroutine?.Dispose();
+            _xpBarSubscription?.Dispose();
         }
     }
 }
