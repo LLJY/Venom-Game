@@ -55,10 +55,11 @@ namespace Obstacles.PressurePlate
         private IEnumerator DamageObjects()
         {
             Collider[] hitColliders = new Collider[4];
-            Physics.OverlapSphereNonAlloc(_transformPos, 1f, hitColliders, _damageableLayerMask);
+            Physics.OverlapSphereNonAlloc(_transformPos, 2f, hitColliders, _damageableLayerMask);
             while (objectsInTrigger.Count > 0)
             {
                 objectsInTrigger.RemoveAll(x => Vector3.Distance(x.transform.position, transform.position) > 2f);
+                
                 foreach (var obj in hitColliders)
                 {
                     if (obj == null) continue;
