@@ -67,10 +67,10 @@ namespace Obstacles.PressurePlate
              * using the NpcCommon.DamageAnything utility script
              */
             Collider[] hitColliders = new Collider[4];
-            Physics.OverlapSphereNonAlloc(_transformPos, 2f, hitColliders, _damageableLayerMask);
+            Physics.OverlapSphereNonAlloc(_transformPos, 3f, hitColliders, _damageableLayerMask);
             while (objectsInTrigger.Count > 0)
             {
-                objectsInTrigger.RemoveAll(x => Vector3.Distance(x.transform.position, transform.position) > 2f);
+                objectsInTrigger.RemoveAll(x => Vector3.Distance(x.transform.position, transform.position) > 3f);
                 
                 foreach (var obj in hitColliders)
                 {
