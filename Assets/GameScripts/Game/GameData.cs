@@ -31,6 +31,7 @@ namespace Game
             PlayerXpReactiveProperty.Subscribe(x =>
             {
                 PlayerXP = x;
+                Debug.Log(PlayerLevelRaw + "level");
             });
         }
 

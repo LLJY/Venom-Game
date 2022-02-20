@@ -147,6 +147,7 @@ namespace Game.UI
                     {
                         x.enabled = false;
                         GameCache.CameraScript.ResetCameraTarget();
+                        GameCache.GameData.FirstTimeSeeingSuicide = false;
                     }
                 });
         }
@@ -162,6 +163,7 @@ namespace Game.UI
                     {
                         x.enabled = false;
                         GameCache.CameraScript.ResetCameraTarget();
+                        GameCache.GameData.FirstTimeSeeingHarm = false;
                     }
                 });
         }
@@ -177,6 +179,7 @@ namespace Game.UI
                     {
                         x.enabled = false;
                         GameCache.CameraScript.ResetCameraTarget();
+                        GameCache.GameData.FirstTimeSeeingAnxiety = false;
                     }
                 });
         }

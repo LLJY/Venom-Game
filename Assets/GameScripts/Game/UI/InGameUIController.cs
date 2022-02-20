@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Game.UI
@@ -24,12 +25,6 @@ namespace Game.UI
         public delegate void DialogCallback(Canvas dialog);
 
         // private IDisposable _dialogueBoxScrollCoroutine;
-
-        private void Awake()
-        {
-            ShowDialogBox("test", "this is a test message lol", new[] {"Yes", "maybe"}, new DialogCallback[]
-                {(x) => { x.enabled = false; }, dialog => dialog.enabled = false});
-        }
 
         /// <summary>
         /// Shows the game dialogue box
@@ -150,6 +145,12 @@ namespace Game.UI
         private void OnDestroy()
         {
             _greenArrowLerpCoroutine?.Dispose();
+        }
+
+        public void ReloadScene()
+        {
+            GameCache.GameData.FreshRespawn = true;
+            SceneManager.LoadScene("StupidGameScene");
         }
 
         // /// <summary>

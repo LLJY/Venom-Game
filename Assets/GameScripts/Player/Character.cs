@@ -35,6 +35,7 @@ namespace Player
         [SerializeField] private Text mediumAttackCountdownText;
         [SerializeField] private Image bigAttackImage;
         [SerializeField] private Text bigAttackCountdownText;
+        [SerializeField] private Canvas dieScreen;
 
 
         // GetComponent assigned variables
@@ -74,7 +75,20 @@ namespace Player
             baseHealth *= Mathf.FloorToInt(1 + GameCache.GameData.PlayerLevel / 25);
             baseDamage *= Mathf.FloorToInt(1 + GameCache.GameData.PlayerLevel / 30);
             
+            Debug.Log("player health" + GameCache.GameData.PlayerCurrentHealth);
 
+            // give the player full health on respawn
+            if (GameCache.GameData.FirstTimePlaying || GameCache.GameData.FreshRespawn)
+            {
+                GameCache.GameData.FreshRespawn = false;
+                health.Value = baseHealth;
+                GameCache.GameData.PlayerCurrentHealth = baseHealth;
+            }
+            else
+            {
+                health.Value = GameCache.GameData.PlayerCurrentHealth;
+            }
+            
             health.Subscribe((x) =>
             {
                 if (health.Value <= 0 && _dieCoroutine == null)
@@ -86,21 +100,10 @@ namespace Player
                 healthBar.fillAmount = (float) x / (float) baseHealth;
             });
             
-            // give the player full health on respawn
-            if (GameCache.GameData.FirstTimePlaying || GameCache.GameData.FreshRespawn)
-            {
-                GameCache.GameData.FreshRespawn = false;
-                health.Value = baseHealth;
-            }
-            else
-            {
-                health.Value = GameCache.GameData.PlayerCurrentHealth;
-            }
-            
             // update the xp bar
             GameCache.GameData.PlayerXpReactiveProperty.Subscribe(x =>
             {
-                xpBar.fillAmount = GameCache.GameData.PlayerLevelProgress;
+                xpBar.fillAmount = 1 - GameCache.GameData.PlayerLevelProgress;
                 xpBarText.text = GameCache.GameData.PlayerLevel.ToString();
             });
         }
@@ -268,7 +271,8 @@ namespace Player
             Debug.Log("Death");
             _pausePlayerInput = true;
             _animator.SetTrigger("Death");
-            // TODO trigger user interface for death.
+            yield return new WaitForSeconds(4f);
+            dieScreen.enabled = true;
             yield return null;
         }
 
