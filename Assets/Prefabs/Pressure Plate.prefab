@@ -130,6 +130,7 @@ MonoBehaviour:
   plateOffsetUp: 0.1
   plateOffsetDown: -0.12
   lerpTime: 0.1
+  damagePerSecond: 5
 --- !u!1001 &8207362760429225489
 PrefabInstance:
   m_ObjectHideFlags: 0

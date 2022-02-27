@@ -13,7 +13,7 @@ namespace Game
     {
         public float PlayerCurrentHealth = 100;
         private float PlayerXP = 0;
-        [NonSerialized] public ReactiveProperty<float> PlayerXpReactiveProperty;
+        public ReactiveProperty<float> PlayerXpReactiveProperty;
         public int DemonsKilled = 0;
         public int CurrentWorldIndex = 0;
         public bool FirstTimeSeeingSuicide = true;
@@ -21,7 +21,7 @@ namespace Game
         public bool FirstTimeSeeingAnxiety = true;
         public bool FirstTimePlaying = true;
         public int SaveSlot = 0;
-        public bool FreshRespawn = true;
+        public bool FreshRespawn = false;
         public string SaveName = "default";
 
         public GameData()
@@ -31,7 +31,6 @@ namespace Game
             PlayerXpReactiveProperty.Subscribe(x =>
             {
                 PlayerXP = x;
-                Debug.Log(PlayerLevelRaw + "level");
             });
         }
 

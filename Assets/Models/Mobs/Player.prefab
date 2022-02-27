@@ -248,7 +248,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSprintSpeed: 5
   characterJumpHeight: 2
-  smallAttackTimeout: 5
   mediumAttackTimeout: 2
   bigAttackTimeout: 5
   laserBeam: {fileID: 3488273919092902647}
@@ -258,11 +257,14 @@ MonoBehaviour:
   baseHealth: 50
   characterRenderer: {fileID: 1670109005645165670}
   healthBar: {fileID: 0}
+  xpBar: {fileID: 0}
+  xpBarText: {fileID: 0}
   baseDamage: 10
   mediumAttackImage: {fileID: 0}
   mediumAttackCountdownText: {fileID: 0}
   bigAttackImage: {fileID: 0}
   bigAttackCountdownText: {fileID: 0}
+  dieScreen: {fileID: 0}
   health:
     value: 20
 --- !u!1001 &2140161093281131078
@@ -331,6 +333,10 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 43cf19174db63f549b650fd48a60e071, type: 3}
       propertyPath: m_Name
       value: Katana
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 43cf19174db63f549b650fd48a60e071, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43cf19174db63f549b650fd48a60e071, type: 3}
